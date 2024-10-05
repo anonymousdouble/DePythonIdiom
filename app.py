@@ -57,7 +57,7 @@ def f():
 
     values = {v.lower() if isinstance(v, str) else v for v in self._values}    '''
     pythonic_code=""
-    return render_template("myindex2.html",idioms=idioms,code=code,pythonic_code=pythonic_code,idiom_one="")
+    return render_template("index.html",idioms=idioms,code=code,pythonic_code=pythonic_code,idiom_one="")
     # return 'welrender_template("index.html",data=msg)come to my webpage!'
 
 @app.route('/idiom_refactor', methods=['POST','GET'])
