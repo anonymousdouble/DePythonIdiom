@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static',filename='myindex.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<script src="{{ url_for('static', filename='highlight.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<link href="https://codemirror.net/lib/codemirror.css" rel="stylesheet">
+<script src="https://codemirror.net/lib/codemirror.js"></script>
+
+<script src="https://codemirror.net/mode/xml/xml.js"></script>
+<script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+<script src="https://codemirror.net/mode/python/python.js"></script>
+<script src="https://codemirror.net/mode/css/css.js"></script>
+{#<script src="highlight.js"></script>#}
+{#<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>#}
+{#<script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>#}
+{#<script>#}
+{#    hljs.initHighlightingOnLoad();#}
+    {#hljs.highlightAll();#}
+{#</script>#}
+{#<pre class="brush:php;toolbar:false">#}
+{#    <?php echo "Hello zeifun.com/">Zeifun" ?>#}
+{#</pre>#}
+
+<link href="https://cdn.staticfile.org/highlight.js/10.7.2/styles/googlecode.min.css" rel="stylesheet">
+<script src="https://cdn.staticfile.org/highlight.js/10.7.2/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<script>
+    hljs.highlightAll();
+        {#hljs.initLineNumbersOnLoad();#}
+
+</script>
+
+
+  <header>
+      <h1>Refactoring Java-style Python Code into Pythonic Code</h1>
+
+  </header>
+<div>
+    <div id="lefty">
+{##}
+{##}
+{##Please input Python code fragments#}
+{#               <pre class= "code" name="code",method=['GET','POST']>#}
+{#                    <code>#}
+{#                        {{code}}#}
+{#                   </code>#}
+{#                   </pre>#}
+               <textarea id ="code" class= "code" name="code",method=['GET','POST'] >
+                   {{code}}
+
+
+               </textarea>
+{##}
+    </div>
+
+{#    <textarea id="test" class="test"></textarea>#}
+    <div id="righty">
+
+
+    <select class= "idiom",name= idioms, method=['GET','POST'], action="/">
+
+        {% for idiom in idioms %}
+        <option id="idiom_option"} >{{idiom}}</option>"
+        {% endfor %}
+{#        {% if idiom!="" %}#}
+{#            <option id="idiom_option",value= {{idiom}} SELECTED ></option>"#}
+{#        {% endif %}#}
+    </select>
+        <table >
+          <tbody id="pythonic_code", class="pythonic_code">
+
+          </tbody>
+    </table>
+{#     <p id="pythonic_code">{{pythonic_code}}</p>#}
+</div>
+    <script>
+        document.querySelector('table').addEventListener('click', function(e) {
+                      var closestCell = e.target.closest('td') // identify the closest td when the click occured
+                          {#activeCell = e.currentTarget.querySelector('td.selected'); // identify the already selected td#}
+
+                      closestCell.classList.add('selected'); // add the "selected" class to the clicked td
+                      {#if (activeCell) activeCell.classList.remove('selected'); // remove the "selected" class from the previously selected td#}
+
+                    })
+
+        {#var tbody = document.getElementById('pythonic_code');#}
+        {##}
+        {#    var trs=tbody.getElementsByTagName("tr");#}
+        {#    if(trs.length>0){#}
+        {#        for(var i_tr=0;i_tr<=trs.length;i_tr++) {#}
+        {#        trs[i_tr].onclick = function () {#}
+        {#            this.style.background = "#F7F7C7"#}
+        {#        }#}
+        {#    }#}
+        {#    }#}
+
+
+
+            {#import CodeFlask from 'codeflask';#}
+
+
+            const idiom = document.getElementById('idiom_option');
+            const selectElement = document.querySelector('.idiom');
+            const code = document.querySelector('.code');
+
+
+            const test = document.getElementById("code");
+
+            var myCodeMirror = CodeMirror.fromTextArea(test, {
+
+              mode:  "python",
+                lineNumbers:true
+            });
+            myCodeMirror.setOption("value", code.textContent);
+            {#myCodeMirror.code.textContent#}
+            {#myCodeMirror.update()#}
+            // 编辑器按键监听
+
+            {#myCodeMirror.getValue().markText({line:2,ch: 5});#}
+            {#myCodeMirror.markText({line: 2, ch: 0},{line: 3, ch: 90},{css: "background-color: 	#F7F7C7"});#}
+
+            myCodeMirror.setSize(600, 700);
+            myCodeMirror.on("keypress", function() {
+                // 显示智能提示
+                code.textContent=myCodeMirror.getValue();
+
+            });
+
+
+            {#flask.updateCode(code.textContent);#}
+            let idiom_var=idiom.textContent;
+            selectElement.addEventListener('change', (event) => {
+
+            {#idiom.textContent = event.target.value;#}
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":event.target.value}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+
+                  }).then(function(json) {
+                      idiom_var=event.target.value;
+                      {#idiom.textContent=event.target.value;#}
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0){
+                          var a=[]
+                          var i=0
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Num"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Pythonic Category"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Java-style Python Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          td.textContent="Pythonic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+
+
+                          for (var [v4,v1, v2,v3] of json){
+                              a.push(v3)
+                              i=i+1
+                              var tr=document.createElement('tr')
+                              td=document.createElement('td');
+                              var button=document.createElement('button')
+                              button.setAttribute("id", i);
+                              button.textContent=i
+                              td.appendChild(button);
+                              tr.appendChild(td);
+                              var td=document.createElement('td')
+                              td.textContent=v4
+                              tr.appendChild(td);
+                              {#JSON.stringify(v1).toString()#}
+
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+
+
+                           }
+
+                          }
+                          else{
+                              var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Num"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Java-style Python Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          td.textContent="Pythonic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+
+
+                          for (var [v1, v2,v3] of json){
+                              a.push(v3)
+                              i=i+1
+                              var tr=document.createElement('tr')
+                              td=document.createElement('td');
+                              var button=document.createElement('button')
+                              button.setAttribute("id", i);
+                              button.textContent=i
+                              td.appendChild(button);
+                              tr.appendChild(td);
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+
+
+                           }
+                          }
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+
+                          {#myCodeMirror.markText({line:1,ch:1},{line:3,ch:1},{readOnly:true});#}
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+                                   pos=a[parseInt(this.textContent)-1]
+                                   myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                }
+
+                                                {#console.log(pos)#}
+                                               {#myCodeMirror.markText({line: 7, ch: 0},{line:10, ch: 9},{css: "background-color: 	#F7F7C7"});#}
+
+                               }
+
+                            }
+                      }
+                      else {
+                          tbody.innerHTML="There is no code could be refactored"
+                      }
+
+                        console.log('parsed json', json)
+                    console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                  })
+
+            });
+            var righty = document.getElementById('righty');
+            righty.addEventListener("click", (event) => {
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":idiom_var}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+                  }).then(function(json) {
+                      code.textContent=event.target.value;
+
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0) {
+                          var a=[]
+                          var i=0
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Pythonic Category"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Java-style Python Code"
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              td.textContent="Pythonic Code"
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v4,v1, v2,v3] of json){
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr=document.createElement('tr')
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td=document.createElement('td')
+                                  td.textContent=v4
+                                  tr.appendChild(td);
+                                  {#JSON.stringify(v1).toString()#}
+
+                                  var td=document.createElement('td')
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td=document.createElement('td');
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+
+
+                               }
+                          }
+                          else{
+
+
+                              var tr = document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td = document.createElement('td');
+                              td.textContent = "Java-style Python Code"
+                              tr.appendChild(td);
+                              td = document.createElement('td');
+                              td.textContent = "Pythonic Code";
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v1, v2,v3] of json) {
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr = document.createElement('tr')
+
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td = document.createElement('td')
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td = document.createElement('td');
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+                              }
+                          }
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+                                   pos=a[parseInt(this.textContent)-1]
+                                    {#$(".pythonic_code").on("click","tr", function (){#}
+                                    {#                                        this.style.background="#F7F7C7"#}
+                                    {#                                        alert("right")#}
+                                    {#                            })#}
+                                    myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                }
+
+                                                {#console.log(pos)#}
+                                               {#myCodeMirror.markText({line: 7, ch: 0},{line:10, ch: 9},{css: "background-color: 	#F7F7C7"});#}
+
+                               }
+
+
+
+                            }
+                          {#myCodeMirror.markText({line:1},{line:3},{readOnly:true});#}
+                      }
+                      else {
+                          tbody.innerHTML="There is no code could be refactored"
+                      }
+
+
+
+                        console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                  })
+                {#righty.style.background="#F7F7C7"#}
+                {#event.style.background="#F7F7C7"#}
+                {#        var tbody = document.getElementById('pythonic_code');#}
+                {##}
+                {#      var trs=tbody.getElementsByTagName("tr");#}
+                {#      var rows = document.querySelectorAll(".pythonic_code");#}
+                {#      for (var i = 0; i < rows.length; i++) {#}
+                {#        rows[i].addEventListener('click', function() {#}
+                {#             this.style.background = "#F7F7C7"#}
+                            {#this.className += ' highlight';#}
+                {#        });#}
+                {#    }#}
+
+                      {#if(trs.length>0){#}
+                      {#      for(var i_tr=0;i_tr<=trs.length;i_tr++) {#}
+                      {#      trs[i_tr].onclick = function () {#}
+                      {#          this.style.background = "#F7F7C7"#}
+                      {#      }#}
+                      {#  }#}
+                      {#  }#}
+
+            });
+
+
+
+    </script>
+
+
+
+
+</div>
+
+</html>

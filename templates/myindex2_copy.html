@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static',filename='myindex.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<script src="{{ url_for('static', filename='highlight.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<link href="https://codemirror.net/lib/codemirror.css" rel="stylesheet">
+<script src="https://codemirror.net/lib/codemirror.js"></script>
+
+<script src="https://codemirror.net/mode/xml/xml.js"></script>
+<script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+<script src="https://codemirror.net/mode/python/python.js"></script>
+<script src="https://codemirror.net/mode/css/css.js"></script>
+{#<script src="highlight.js"></script>#}
+{#<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>#}
+{#<script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>#}
+{#<script>#}
+{#    hljs.initHighlightingOnLoad();#}
+    {#hljs.highlightAll();#}
+{#</script>#}
+{#<pre class="brush:php;toolbar:false">#}
+{#    <?php echo "Hello zeifun.com/">Zeifun" ?>#}
+{#</pre>#}
+
+<link href="https://cdn.staticfile.org/highlight.js/10.7.2/styles/googlecode.min.css" rel="stylesheet">
+<script src="https://cdn.staticfile.org/highlight.js/10.7.2/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<script>
+    hljs.highlightAll();
+        {#hljs.initLineNumbersOnLoad();#}
+
+</script>
+
+
+  <header>
+      <h1 >Refactoring Java-style Python Code into Pythonic Code</h1>
+
+  </header>
+<div>
+{#    <div id="lefty">#}
+{##}
+{##}
+{##Please input Python code fragments#}
+{#               <pre class= "code" name="code",method=['GET','POST']>#}
+{#                    <code>#}
+{#                        {{code}}#}
+{#                   </code>#}
+{#                   </pre>#}
+{#               <textarea id ="code" class= "code" name="code",method=['GET','POST'] >#}
+{#                   {{code}}#}
+{##}
+{##}
+{#               </textarea>#}
+{##}
+{#    </div>#}
+
+    <textarea id="test" class="test"></textarea>
+    <div id="righty">
+
+
+    <select class= "idiom",name= idioms, method=['GET','POST'], action="/">
+
+        {% for idiom in idioms %}
+        <option id="idiom_option"} >{{idiom}}</option>"
+        {% endfor %}
+{#        {% if idiom!="" %}#}
+{#            <option id="idiom_option",value= {{idiom}} SELECTED ></option>"#}
+{#        {% endif %}#}
+    </select>
+        <table >
+          <tbody id="pythonic_code">
+
+          </tbody>
+    </table>
+{#     <p id="pythonic_code">{{pythonic_code}}</p>#}
+</div>
+    <script>
+            {#import CodeFlask from 'codeflask';#}
+
+
+            const idiom = document.getElementById('idiom_option');
+            const selectElement = document.querySelector('.idiom');
+            const code = document.querySelector('.code');
+
+            var myCodeMirror1 = CodeMirror(code, {
+                value:code.textContent,
+               mode:  "python",
+                lineNumbers:true
+            });
+            const test = document.getElementById("test");
+
+            var myCodeMirror = CodeMirror.fromTextArea(test, {
+                theme: "leetcode",
+              mode:  "python",
+                lineNumbers:true
+            });
+            myCodeMirror.setOption("value", code.textContent);
+            // 编辑器按键监听
+            myCodeMirror.on("keypress", function() {
+                // 显示智能提示
+                myCodeMirror.showHint(); // 注意，注释了CodeMirror库中show-hint.js第131行的代码（阻止了代码补全，同时提供智能提示）
+            });
+
+
+            {#flask.updateCode(code.textContent);#}
+            let idiom_var=idiom.textContent;
+            selectElement.addEventListener('change', (event) => {
+
+            {#idiom.textContent = event.target.value;#}
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":code.textContent,"idiom":event.target.value}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+
+                  }).then(function(json) {
+                      idiom_var=event.target.value;
+                      {#idiom.textContent=event.target.value;#}
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0){
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+                          var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Java-style Python Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          td.textContent="Pythonic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+                          for (var [v1, v2,v3] of json){
+                              var tr=document.createElement('tr')
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                           }
+                    }
+                      else {
+                          tbody.innerHTML="There is no code could be refactored"
+                      }
+
+                        console.log('parsed json', json)
+                    console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                  })
+
+            });
+            code.addEventListener('change', (event) => {
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":event.target.value,"idiom":idiom_var}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+                  }).then(function(json) {
+                      code.textContent=event.target.value;
+
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0) {
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+                          var tr = document.createElement('tr');
+                          var td = document.createElement('td');
+                          td.textContent = "Java-style Python Code"
+                          tr.appendChild(td);
+                          td = document.createElement('td');
+                          td.textContent = "Pythonic Code";
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+                          for (var [v1, v2] of json) {
+                              var tr = document.createElement('tr')
+                              var td = document.createElement('td')
+                              var pre_html = document.createElement('pre')
+                              pre_html.innerText = v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td = document.createElement('td');
+                              var pre_html = document.createElement('pre')
+                              pre_html.innerText = v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                          }
+                      }
+                      else {
+                          tbody.innerHTML="There is no code could be refactored"
+                      }
+
+                        console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                  })
+
+
+            });
+
+
+
+    </script>
+
+
+
+
+</div>
+
+</html>

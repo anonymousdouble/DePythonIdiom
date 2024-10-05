@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static',filename='myindex.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<script src="{{ url_for('static', filename='highlight.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<link href="https://codemirror.net/lib/codemirror.css" rel="stylesheet">
+<script src="https://codemirror.net/lib/codemirror.js"></script>
+
+<script src="https://codemirror.net/mode/xml/xml.js"></script>
+<script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+<script src="https://codemirror.net/mode/python/python.js"></script>
+<script src="https://codemirror.net/mode/css/css.js"></script>
+{#<script src="highlight.js"></script>#}
+{#<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>#}
+{#<script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>#}
+{#<script>#}
+{#    hljs.initHighlightingOnLoad();#}
+    {#hljs.highlightAll();#}
+{#</script>#}
+{#<pre class="brush:php;toolbar:false">#}
+{#    <?php echo "Hello zeifun.com/">Zeifun" ?>#}
+{#</pre>#}
+
+<link href="https://cdn.staticfile.org/highlight.js/10.7.2/styles/googlecode.min.css" rel="stylesheet">
+<script src="https://cdn.staticfile.org/highlight.js/10.7.2/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<script>
+    hljs.highlightAll();
+        {#hljs.initLineNumbersOnLoad();#}
+
+</script>
+
+<style>
+
+             tr{cursor: pointer; transition: all .25s ease-in-out}
+            .selected{background-color: red; font-weight: bold; color: #fff;}
+
+        </style>
+  <header>
+      <h1>Refactoring Non-idiomatic Code into Idiomatic Code</h1>
+
+  </header>
+<div>
+    <div id="lefty">
+{##}
+{##}
+{##Please input Python code fragments#}
+{#               <pre class= "code" name="code",method=['GET','POST']>#}
+{#                    <code>#}
+{#                        {{code}}#}
+{#                   </code>#}
+{#                   </pre>#}
+               <textarea id ="code" class= "code" name="code",method=['GET','POST'] >
+                   {{code}}
+
+
+               </textarea>
+{##}
+    </div>
+
+{#    <textarea id="test" class="test"></textarea>#}
+    <div id="righty">
+
+
+    <select class= "idiom",name= idioms, method=['GET','POST'], action="/">
+
+        {% for idiom in idioms %}
+        <option id="idiom_option"} >{{idiom}}</option>"
+        {% endfor %}
+{#        {% if idiom!="" %}#}
+{#            <option id="idiom_option",value= {{idiom}} SELECTED ></option>"#}
+{#        {% endif %}#}
+    </select>
+        <table >
+          <tbody id="pythonic_code", class="pythonic_code">
+
+          </tbody>
+    </table>
+{#     <p id="pythonic_code">{{pythonic_code}}</p>#}
+</div>
+<div>
+<h4 id="examples_div">Examples:</h4>
+<div id="examples">
+<table >
+<tbody>
+<tr>
+              <td>Pythonic Idiom</td>
+              <td>Non-idiomatic Code</td>
+              <td>Idiomatic Code</td>
+</tr>
+<tr>
+<td>List-Compre</td>
+    <td onclick="ExampleClick()",method=['GET','POST']>
+<pre><code>input_files = []
+for root, dirs, files in os.walk(path):
+    for file in files:
+        if file.endswith(".pbxproj"):
+            input_files.append(path + file)</code></pre>
+              </td>
+              <td><pre><code>
+input_files = [path + file for (root, dirs, files) in os.walk(path)
+                           for file in files if file.endswith('.pbxproj')]
+              </code></pre></td>
+
+          </tr>
+          <tr>
+              <td>List-Compre</td>
+              <td onclick="ExampleClick()",method=['GET','POST']><pre><code>
+values = []
+for x in csv.reader(f):
+    if x:
+        values.append(x)
+              </code></pre></td>
+              <td><pre><code>
+values = [x for x in csv.reader(f) if x]
+              </code></pre></td>
+          </tr>
+          <tr>
+              <td>List-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+flat_list = []
+for sublist in list_of_lists:
+    for item in sublist:
+         flat_list.append(item)
+              </code></pre></td>
+              <td><pre><code>
+flat_list = [item for sublist in list_of_lists for item in sublist]
+              </code></pre></td>
+
+          </tr>
+          <tr>
+              <td>Set-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+results_set = set()
+for result in self.attack_log_manager.results:
+    results_set.add(result.original_text)
+              </code></pre></td>
+              <td><pre><code>
+results_set = {result.original_text
+                        for result in self.attack_log_manager.results}
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Set-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+panels = set()
+for panelset in response.context['panels_by_tab'].values():
+    for panel in panelset:
+        panels.add(panel.name)
+              </code></pre></td>
+              <td><pre><code>
+panels = {panel.name for panelset in response.context['panels_by_tab'].values() for panel in panelset}
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Set-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+true_latents = set()
+for i1 in range(2):
+    for i2 in range(2):
+        for i3 in range(2):
+            true_latents.add((i1, i2, i3))
+              </code></pre></td>
+              <td><pre><code>
+true_latents = {(i1, i2, i3) for i1 in range(2) for i2 in range(2) for i3 in range(2)}
+              </code></pre></td>
+
+          </tr>
+          <tr>
+              <td>Dict-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+convs = {}
+for name, mod in module.named_modules():
+    if isinstance(mod, _ConvNd):
+        convs[name] = mod
+              </code></pre></td>
+              <td><pre><code>
+results_set = {result.original_text
+                        for result in self.attack_log_manager.results}
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Dict-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+addrs_to_index = {}
+for i, n in enumerate(post_order):
+    addrs_to_index[n.addr] = i
+              </code></pre></td>
+              <td><pre><code>
+addrs_to_index = {n.addr: i for (i, n) in enumerate(post_order)}
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Dict-Compre</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+names = {}
+with open(file_name) as f:
+    for id, name in enumerate(f):
+        names[id] = name
+              </code></pre></td>
+              <td><pre><code>
+names = {}
+with open(file_name) as f:
+    names = {id: name for id, name in enumerate(f)}
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Chain-Comparison</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+if len(out) > num and rc == num:
+    pass
+              </code></pre></td>
+              <td><pre><code>
+if len(out) > num == rc:
+    pass
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Chain-Comparison</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+return int((25000 <= salary) and (salary <= 75000))
+              </code></pre></td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+return int(25000 <= salary <= 75000)
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Chain-Comparison</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+if i <= n1:
+    p1 = m1
+elif i > n1 and i <= (n1 + n2):
+    p1 = m2
+              </code></pre></td>
+              <td><pre><code>
+if i <= n1:
+    p1 = m1
+elif n1 < i <= (n1 + n2):
+    p1 = m2
+              </code></pre></td>
+          </tr>
+                             <tr>
+              <td>Truth-Value-Test</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+assert list(iterator) == []
+              </code></pre></td>
+              <td><pre><code>
+assert not list(iterator)
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Truth-Value-Test</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+if config.hidden_size % config.num_attention_heads != 0:
+    pass
+              </code></pre></td>
+              <td><pre><code>
+if config.hidden_size % config.num_attention_heads:
+    pass
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Truth-Value-Test</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+if end!=0:
+    pass
+              </code></pre></td>
+              <td><pre><code>
+if end:
+    pass
+              </code></pre></td>
+          </tr>
+                             <tr>
+              <td>Loop-Else</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+good_partition = True
+while self.spread_part_multiplicity():
+    self.db_trace("spread 1")
+    if self.lpart >= ub:
+        self.discarded += 1
+        good_partition = False
+        self.db_trace(" Discarding")
+        self.lpart = ub - 2
+        break
+if good_partition:
+    state = [self.f, self.lpart, self.pstack]
+    yield state
+              </code></pre></td>
+              <td><pre><code>
+while self.spread_part_multiplicity():
+    self.db_trace("spread 1")
+    if self.lpart >= ub:
+        self.discarded += 1
+        self.db_trace(" Discarding")
+        self.lpart = ub - 2
+        break
+else:
+    state = [self.f, self.lpart, self.pstack]
+    yield state
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Loop-Else</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+value = None
+for (name, value) in matches:
+    if value:
+        break
+if value is None:
+    raise errors.PreProcessFail("Unable to read")
+              </code></pre></td>
+              <td><pre><code>
+for (name, value) in matches:
+    if value:
+        break
+else:
+    raise errors.PreProcessFail("Unable to read")
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Loop-Else</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+is_bad = False
+while start < len(chars):
+    end = len(chars)
+    cur_substr = ''.join(chars[start:end])
+    if cur_substr is None:
+        is_bad = True
+        break
+if is_bad:
+    output_tokens.append(self.unk_token)
+else:
+    output_tokens.extend(sub_tokens)
+              </code></pre></td>
+              <td><pre><code>
+while start < len(chars):
+    end = len(chars)
+    cur_substr = ''.join(chars[start:end])
+    if cur_substr is None:
+        output_tokens.append(self.unk_token)
+        break
+else:
+    output_tokens.extend(sub_tokens)
+              </code></pre></td>
+          </tr>
+                                       <tr>
+              <td>Assign-Multi-Targets</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+side[u] = 1
+side[v] = 0
+              </code></pre></td>
+              <td><pre><code>
+side[u], side[v]  = 1, 0
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Assign-Multi-Targets</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+f = d[0]
+d[0] = d[e]
+d[e] = f
+              </code></pre></td>
+              <td><pre><code>
+d[0], d[e] = d[e], d[0]
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Assign-Multi-Targets</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+tmp_real = data[ii]
+tmp_imag = data[ii + 1]
+data[ii] = data[jj]
+data[ii + 1] = data[jj + 1]
+data[jj] = tmp_real
+data[jj + 1] = tmp_imag
+              </code></pre></td>
+              <td><pre><code>
+data[ii] , data[ii + 1] , data[jj] , data[jj + 1]  = data[jj], data[jj + 1], data[ii], data[ii + 1]
+              </code></pre></td>
+          </tr>
+                                                 <tr>
+              <td>Star-in-Func-Call</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+ss[2], ss[6] = RND(
+        ss[7], ss[0], ss[1], ss[2], ss[3], ss[4],
+                  ss[5], ss[6], 57, 0x78A5636F43172F60)
+
+              </code></pre></td>
+              <td><pre><code>
+ss[2], ss[6] = RND(
+        ss[7], *ss[0:7:1], 57, 0x78A5636F43172F60)
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Star-in-Func-Call</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+ymins = min(charbb[1], charbb[3], charbb[5], charbb[7])
+              </code></pre></td>
+              <td><pre><code>
+ymins = min(*charbb[1:9:2])
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>Star-in-Func-Call</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+self._set_regular_args(p0, p[1], p[2], p[3], p[4])
+              </code></pre></td>
+              <td><pre><code>
+ self._set_regular_args(p0, *p[1:5])              </code></pre></td>
+          </tr>
+                                                           <tr>
+              <td>For-Multi-Targets</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+for interval in intervals:
+    if interval[1] - interval[0] > utter_min_len:
+        utter_part = utter[interval[0]:interval[1]]
+              </code></pre></td>
+              <td><pre><code>
+for (interval_0, interval_1, *interval_len) in intervals:
+    if interval_1 - interval_0 > utter_min_len:
+        utter_part = utter[interval_0:interval_1]
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>For-Multi-Targets</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+for box in boxes:
+    x1 = float(box[0] - box[2] / 2.0)
+    y1 = float(box[1] - box[3] / 2.0)
+    x2 = float(box[0] + box[2] / 2.0)
+    y2 = float(box[1] + box[3] / 2.0)
+    det_conf = float(box[4])
+    cls_out = [det_conf * x.cpu().numpy() for x in box[5]]
+              </code></pre></td>
+              <td><pre><code>
+for (box_0, box_1, box_2, box_3, box_4, box_5, *box_len) in boxes:
+    x1 = float(box_0 - box_2 / 2.0)
+    y1 = float(box_1 - box_3 / 2.0)
+    x2 = float(box_0 + box_2 / 2.0)
+    y2 = float(box_1 + box_3 / 2.0)
+    det_conf = float(box_4)
+    cls_out = [det_conf * x.cpu().numpy() for x in box_5]
+              </code></pre></td>
+
+          </tr>
+                    <tr>
+              <td>For-Multi-Targets</td>
+              <td  onclick="ExampleClick()",method=['GET','POST']><pre><code>
+for c in _CONNECTION:
+    col = '#%02x%02x%02x' % joint_color(c[0])
+    ax.plot([pose[0, c[0]], pose[0, c[1]]],[pose[1, c[0]], pose[1, c[1]]],
+                  [pose[2, c[0]], pose[2, c[1]]], c=col)
+              </code></pre></td>
+              <td><pre><code>
+for (c_0, c_1, *c_len) in _CONNECTION:
+    col = '#%02x%02x%02x' % joint_color(c_0)
+    ax.plot([pose[0, c_0], pose[0, c_1]],[pose[1, c_0], pose[1, c_1]],
+                  [pose[2, c_0], pose[2, c_1]], c=col)
+              </code></pre></td>
+          </tr>
+          </tbody>
+            </table>
+
+
+
+
+        </div>
+
+    </div>
+    <script>
+
+        function ExampleClick()
+        {
+
+
+            var code = document.querySelector('.code');
+        　　　　var td = event.target; //
+            let arr = td.textContent.split('\n');
+            var new_str="def f():\n"
+            for (var j=0;j<arr.length;j++)
+                            {
+                                new_str=new_str+"    "+arr[j]+"\n"
+                            }
+
+                 var test = document.getElementById("code");
+
+
+            myCodeMirror.setOption("value", new_str);
+
+                        myCodeMirror.setSize(600, 700);
+                        myCodeMirror.on("keypress", function() {
+                            // 显示智能提示
+                            test.textContent=new_str;
+
+                        });
+                        test.textContent=new_str;
+
+                        code.textContent=new_str;
+                         console.log("i want to know the click example is: ",test.textContent)
+                         console.log("i want to know the click the code example is: ",myCodeMirror.getValue())
+
+
+        {#　　　　alert("行号：" + (td.parentElement.rowIndex) + "，列号：" + td.cellIndex);#}
+        {##}
+        {##}
+        {#　　　　td.innerHTML="dddd";　　　　　　　　//设置单击单元格的值#}
+
+        }
+
+
+
+            const idiom = document.getElementById('idiom_option');
+
+            const selectElement = document.querySelector('.idiom');
+            var code = document.querySelector('.code');
+
+
+            var test = document.getElementById("code");
+
+            var myCodeMirror = CodeMirror.fromTextArea(test, {
+
+              mode:  "python",
+                lineNumbers:true
+            });
+            myCodeMirror.setOption("value", code.textContent);
+
+            {#myCodeMirror.code.textContent#}
+            {#myCodeMirror.update()#}
+            // 编辑器按键监听
+
+            {#myCodeMirror.getValue().markText({line:2,ch: 5});#}
+
+            myCodeMirror.markText({line: 2, ch: 0},{line: 4, ch: 90},{css: "background-color: 	#F7F7C7"});
+
+            myCodeMirror.setSize(600, 700);
+            myCodeMirror.on("keypress", function() {
+                // 显示智能提示
+                test.textContent=myCodeMirror.getValue();
+
+            });
+             console.log("i want to know the outer code example is: ",myCodeMirror.getValue())
+
+
+            {#flask.updateCode(code.textContent);#}
+            let idiom_var=idiom.textContent;
+            selectElement.addEventListener('change', (event) => {
+
+            {#idiom.textContent = event.target.value;#}
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":event.target.value}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+
+                  }).then(function(json) {
+                      idiom_var=event.target.value;
+                      {#idiom.textContent=event.target.value;#}
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0){
+                          var a=[]
+                          var i=0
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Num"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Pythonic Idioms"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Non-idiomatic Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          td.textContent="Idiomatic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+
+
+                          for (var [v4,v1, v2,v3] of json){
+                              a.push(v3)
+                              i=i+1
+                              var tr=document.createElement('tr')
+                              td=document.createElement('td');
+                              var button=document.createElement('button')
+                              button.setAttribute("id", i);
+                              button.textContent=i
+                              td.appendChild(button);
+                              tr.appendChild(td);
+                              var td=document.createElement('td')
+                              td.textContent=v4
+                              tr.appendChild(td);
+                              {#JSON.stringify(v1).toString()#}
+
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+
+
+                           }
+
+                          }
+                          else{
+                              var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Num"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Non-idiomatic Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          td.textContent="Idiomatic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+
+
+                          for (var [v1, v2,v3] of json){
+                              a.push(v3)
+                              i=i+1
+                              var tr=document.createElement('tr')
+                              td=document.createElement('td');
+                              var button=document.createElement('button')
+                              button.setAttribute("id", i);
+                              button.textContent=i
+                              td.appendChild(button);
+                              tr.appendChild(td);
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+
+
+                           }
+                          }
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+
+                          {#myCodeMirror.markText({line:1,ch:1},{line:3,ch:1},{readOnly:true});#}
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+
+                                var tbody = document.getElementById('pythonic_code');
+                                   {#var elements=document.getElementsByTagName('tr');#}
+                                   for(var i_tr=1;i_tr<tbody.rows.length;i_tr++){
+                                       if (i_tr==parseInt(this.textContent))
+                                            tbody.rows[i_tr].style.background="#F7F7C7"
+                                       else
+                                            tbody.rows[i_tr].style.background="#E0FFFF"
+                                   }
+                                   pos=a[parseInt(this.textContent)-1]
+                                   myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                }
+
+
+                               }
+
+                            }
+                      }
+                      else {
+                          tbody.innerHTML="There is no code could be refactored"
+                      }
+
+                        console.log('parsed json', json)
+                    console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    var tbody = document.getElementById('pythonic_code');
+                    tbody.innerHTML="Code has syntax error, please first check indention (4 spaces for 1 indent)."
+                    console.log('parsing failed', ex)
+                  })
+
+            });
+            var righty = document.getElementById('lefty');
+
+            {#code#}
+          //myCodeMirror.getValue()
+            righty.addEventListener("click", (event) => {
+
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":idiom_var}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+                  }).then(function(json) {
+
+                    var code_left = document.getElementById("code");
+                      code.textContent=event.target.value;
+                      console.log("i want to know the code is: ",code_left.textContent)
+                      console.log("i want to know the code is: ",event.target.value)
+                    console.log("i want to know the original code is: ",myCodeMirror.getValue())
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0) {
+                          var a=[]
+                          var i=0
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Pythonic Idioms"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Non-idiomatic Code"
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              td.textContent="Idiomatic Code"
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v4,v1, v2,v3] of json){
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr=document.createElement('tr')
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td=document.createElement('td')
+                                  td.textContent=v4
+                                  tr.appendChild(td);
+                                  {#JSON.stringify(v1).toString()#}
+
+                                  var td=document.createElement('td')
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td=document.createElement('td');
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+
+
+                               }
+                              console.log("set table content",tbody)
+                          }
+                          else{
+
+
+                              var tr = document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td = document.createElement('td');
+                              td.textContent = "Non-idiomatic Code"
+                              tr.appendChild(td);
+                              td = document.createElement('td');
+                              td.textContent = "Idiomatic Code";
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v1, v2,v3] of json) {
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr = document.createElement('tr')
+
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td = document.createElement('td')
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td = document.createElement('td');
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+                              }
+                          }
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+                                var tbody = document.getElementById('pythonic_code');
+                                   {#var elements=document.getElementsByTagName('tr');#}
+                                   for(var i_tr=1;i_tr<tbody.rows.length;i_tr++){
+                                       if (i_tr==parseInt(this.textContent))
+                                            tbody.rows[i_tr].style.background="#F7F7C7"
+                                       else
+                                        tbody.rows[i_tr].style.background="#E0FFFF"
+                                   }
+
+                                   pos=a[parseInt(this.textContent)-1]
+                                    myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                }
+
+                                                console.log(pos)
+                                               {#myCodeMirror.markText({line: 7, ch: 0},{line:10, ch: 9},{css: "background-color: 	#F7F7C7"});#}
+
+                               }
+
+
+
+                            }
+
+
+                          {#myCodeMirror.markText({line:1},{line:3},{readOnly:true});#}
+                      }
+                      else {
+                           console.log('parsing failed', json)
+                          tbody.innerHTML="There is no code could be refactored"
+                      }
+                        console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    var tbody = document.getElementById('pythonic_code');
+                    tbody.innerHTML="Code has syntax error, please first check indention (4 spaces for 1 indent)."
+                    console.log('parsing failed', ex)
+                  })
+
+
+            });
+
+
+
+
+
+    </script>
+
+
+
+
+</div>
+
+</html>

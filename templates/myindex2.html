@@ -1,0 +1,2247 @@
+<!doctype html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static',filename='myindex.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<script src="{{ url_for('static', filename='highlight.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='github.min.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
+{#<link href="https://codemirror.net/lib/codemirror.css" rel="stylesheet">#}
+{#<script src="https://codemirror.net/lib/codemirror.js"></script>#}
+
+<script src="https://codemirror.net/mode/xml/xml.js"></script>
+<script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+<script src="https://codemirror.net/mode/python/python.js"></script>
+<script src="https://codemirror.net/mode/css/css.js"></script>
+
+<link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+<link href="https://cdn.staticfile.org/highlight.js/10.7.2/styles/googlecode.min.css" rel="stylesheet">
+<script src="https://cdn.staticfile.org/highlight.js/10.7.2/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<script>
+    hljs.highlightAll();
+        {#hljs.initLineNumbersOnLoad();#}
+
+</script>
+
+<style>
+
+             tr{cursor: pointer; transition: all .25s ease-in-out}
+            .selected{background-color: red; font-weight: bold; color: #fff;}
+
+        </style>
+  <header>
+      <h1>Deidioming Pythonic Code into Explanatory Non-Idiomatic Code to Enhance the Readability of Nine Pythonic Idioms</h1>
+
+  </header>
+<div>
+<div>
+<div>
+    <div id="code_area_font">  <b>Code Area:</b> Click on the following code area to update the results; You can enter your own code to try out the tool</div>
+    <div id="lefty">
+
+{##}
+{##}
+{##Please input Python code fragments#}
+{#               <pre class= "code" name="code",method=['GET','POST']>#}
+{#                    <code>#}
+{#                        {{code}}#}
+{#                   </code>#}
+{#                   </pre>#}
+               <textarea id ="code" class= "code" name="code",method=['GET','POST'] >
+                   {{code}}
+
+
+               </textarea>
+{##}
+    </div>
+    </div>
+
+<div id="examples">
+    <div id="example_font">  <b>Examples:</b> Click on the following code example to update the Code Area</div>
+<table >
+<tbody>
+<tr>
+              <td>Pythonic Idiom</td>
+              <td> Code</td>
+
+</tr>
+<tr>
+<td>List-Comprehension
+</td>
+    <td>
+    <a href="https://github.com/slackapi/python-slack-sdk/blob/1ed78c6fba0c368af0df52fc7c4609e7ffc974f6/slack_sdk/scim/v1/internal_utils.py#L66">Github link to the following code example</a>
+{#        <a href="https://github.com/Serchinastico/Kin/pull/80">pull request</a>#}
+    <div onclick="ExampleClick(this)",method=['GET','POST']>
+<pre><code>
+def _to_snake_cased(original: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    return _convert_dict_keys(
+        original,
+        {},
+        lambda s: re.sub(
+            "^_",
+            "",
+            "".join(["_" + c.lower() if c.isupper() else c for c in s]),
+        ),
+    )
+
+</code></pre>
+              </div>
+    </td>
+
+          </tr>
+          <tr>
+              <td>List-Comprehension</td>
+              <td>
+                  <a href="https://github.com/errbotio/errbot/blob/ba33d446381aa66f6a8d707c5b27c8c6aa536b83/errbot/plugin_info.py#L42">Github link to the following code example</a>
+{#                  <a href="https://github.com/keras-team/keras/pull/15924">pull request</a>#}
+
+              <div onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+@staticmethod
+def parse(config: ConfigParser) -> "PluginInfo":
+    """
+    Throws ConfigParserError with a meaningful message if the ConfigParser doesn't contain the minimal
+     information required.
+    """
+    name = config.get("Core", "Name")
+    module = config.get("Core", "Module")
+    core = config.get("Core", "Core", fallback="false").lower() == "true"
+    doc = config.get("Documentation", "Description", fallback=None)
+
+    python_version = config.get("Python", "Version", fallback=None)
+    # Old format backward compatibility
+    if python_version:
+        if python_version in ("2+", "3"):
+            python_version = (3, 0, 0)
+        elif python_version == "2":
+            python_version = (2, 0, 0)
+        else:
+            try:
+                python_version = tuple(
+                    version2tuple(python_version)[0:3]
+                )  # We can ignore the alpha/beta part.
+            except ValueError as ve:
+                raise ConfigParserError(
+                    f"Invalid Python Version format: {python_version} ({ve})"
+                )
+
+    min_version = config.get("Errbot", "Min", fallback=None)
+    max_version = config.get("Errbot", "Max", fallback=None)
+    try:
+        if min_version:
+            min_version = version2tuple(min_version)
+    except ValueError as ve:
+        raise ConfigParserError(
+            f"Invalid Errbot min version format: {min_version} ({ve})"
+        )
+
+    try:
+        if max_version:
+            max_version = version2tuple(max_version)
+    except ValueError as ve:
+        raise ConfigParserError(
+            f"Invalid Errbot max version format: {max_version} ({ve})"
+        )
+    depends_on = config.get("Core", "DependsOn", fallback=None)
+    deps = [name.strip() for name in depends_on.split(",")] if depends_on else []
+
+    return PluginInfo(
+        name, module, doc, core, python_version, min_version, max_version, deps
+    )
+    </code></pre></div>
+
+          </tr>
+          <tr>
+              <td>List-Comprehension</td>
+              <td>
+                  <a href="https://github.com/MrGiovanni/UNetPlusPlus/blob/e145ba63862982bf1099cf2ec11d5466b434ae0b/pytorch/nnunet/training/network_training/nnUNetTrainerV2_DDP.py#L129">Github link to the following code example</a>
+{#                  <a href="https://github.com/tensorflow/model-optimization/pull/937">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def initialize(self, training=True, force_load_plans=False):
+    """
+    For prediction of test cases just set training=False, this will prevent loading of training data and
+    training batchgenerator initialization
+    :param training:
+    :return:
+    """
+    if not self.was_initialized:
+        maybe_mkdir_p(self.output_folder)
+
+        if force_load_plans or (self.plans is None):
+            self.load_plans_file()
+
+        self.process_plans(self.plans)
+
+        self.setup_DA_params()
+
+        self.folder_with_preprocessed_data = join(self.dataset_directory, self.plans['data_identifier'] +
+                                                  "_stage%d" % self.stage)
+        if training:
+            self.dl_tr, self.dl_val = self.get_basic_generators()
+            if self.unpack_data:
+                if self.local_rank == 0:
+                    print("unpacking dataset")
+                    unpack_dataset(self.folder_with_preprocessed_data)
+                    print("done")
+                else:
+                    # we need to wait until worker 0 has finished unpacking
+                    npz_files = subfiles(self.folder_with_preprocessed_data, suffix=".npz", join=False)
+                    case_ids = [i[:-4] for i in npz_files]
+                    all_present = all(
+                        [isfile(join(self.folder_with_preprocessed_data, i + ".npy")) for i in case_ids])
+                    while not all_present:
+                        print("worker", self.local_rank, "is waiting for unpacking")
+                        sleep(3)
+                        all_present = all(
+                            [isfile(join(self.folder_with_preprocessed_data, i + ".npy")) for i in case_ids])
+                    # there is some slight chance that there may arise some error because dataloader are loading a file
+                    # that is still being written by worker 0. We ignore this for now an address it only if it becomes
+                    # relevant
+                    # (this can occur because while worker 0 writes the file is technically present so the other workers
+                    # will proceed and eventually try to read it)
+            else:
+                print(
+                    "INFO: Not unpacking data! Training may be slow due to that. Pray you are not using 2d or you "
+                    "will wait all winter for your model to finish!")
+
+            # setting weights for deep supervision losses
+            net_numpool = len(self.net_num_pool_op_kernel_sizes)
+
+            # we give each output a weight which decreases exponentially (division by 2) as the resolution decreases
+            # this gives higher resolution outputs more weight in the loss
+            weights = np.array([1 / (2 ** i) for i in range(net_numpool)])
+
+            # we don't use the lowest 2 outputs. Normalize weights so that they sum to 1
+            mask = np.array([True if i < net_numpool - 1 else False for i in range(net_numpool)])
+            weights[~mask] = 0
+            weights = weights / weights.sum()
+            self.ds_loss_weights = weights
+
+            seeds_train = np.random.random_integers(0, 99999, self.data_aug_params.get('num_threads'))
+            seeds_val = np.random.random_integers(0, 99999, max(self.data_aug_params.get('num_threads') // 2, 1))
+            print("seeds train", seeds_train)
+            print("seeds_val", seeds_val)
+            self.tr_gen, self.val_gen = get_moreDA_augmentation(self.dl_tr, self.dl_val,
+                                                                self.data_aug_params[
+                                                                    'patch_size_for_spatialtransform'],
+                                                                self.data_aug_params,
+                                                                deep_supervision_scales=self.deep_supervision_scales,
+                                                                seeds_train=seeds_train,
+                                                                seeds_val=seeds_val,
+                                                                pin_memory=self.pin_memory)
+            self.print_to_log_file("TRAINING KEYS:\n %s" % (str(self.dataset_tr.keys())),
+                                   also_print_to_console=False)
+            self.print_to_log_file("VALIDATION KEYS:\n %s" % (str(self.dataset_val.keys())),
+                                   also_print_to_console=False)
+        else:
+            pass
+
+        self.initialize_network()
+        self.initialize_optimizer_and_scheduler()
+        self.network = DDP(self.network, device_ids=[self.local_rank])
+
+    else:
+        self.print_to_log_file('self.was_initialized is True, not running self.initialize again')
+    self.was_initialized = True
+</code></pre></div>
+              </td>
+
+
+          </tr>
+          <tr>
+              <td>Set-Comprehension</td>
+              <td>
+                  <a href="https://github.com/google/upvote_py2/blob/51606947641763489db31bffcb934e8112eb5a08/upvote/shared/constants.py#L117">Github link to the following code example</a>
+{#                  <a href="https://github.com/QData/TextAttack/pull/602">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def Contains(self, value, ignore_case=False):
+    values = self._values
+    if isinstance(value, str) and ignore_case:
+      value = value.lower()
+      values = {v.lower() if isinstance(v, str) else v for v in self._values}
+    return value in values
+              </code></pre></div></td>
+
+
+          </tr>
+                    <tr>
+              <td>Set-Comprehension</td>
+              <td>
+              <a href="https://github.com/HypothesisWorks/hypothesis/blob/3fc1f2a76b0104d70b7a0800a8edcb01ad0c3dab/hypothesis-python/tests/cover/test_sampled_from.py#L81">Github link to the following code example</a>
+{#                  <a href="https://github.com/wagtail/wagtail/pull/7877">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def test_efficient_sets_of_samples_with_chained_transformations(x):
+    assert x == {x for x in range(50) if (x * 2) % 3}
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>Set-Comprehension</td>
+              <td>
+              <a href="https://github.com/ranjian0/building_tools/blob/08a79112b6d1c563bf68e388c108bd9f7742a049/btools/building/roof/roof_types.py#L323">Github link to the following code example</a>
+{#                  <a href="https://github.com/pyro-ppl/pyro/pull/3007">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def gable_process_box(bm, roof_faces, prop):
+    """Finalize box gable roof type"""
+    # -- extrude upward faces
+    top_faces = [f for f in roof_faces if f.normal.z]
+    result = bmesh.ops.extrude_face_region(bm, geom=top_faces).get("geom")
+
+    # -- move abit upwards (by amount roof thickness)
+    bmesh.ops.translate(bm, verts=filter_geom(result, BMVert), vec=(0, 0, prop.thickness))
+    bmesh.ops.delete(bm, geom=top_faces, context="FACES")
+
+    # -- face maps
+    link_faces = {f for fc in filter_geom(result, BMFace) for e in fc.edges for f in e.link_faces if not f.normal.z}
+    link_faces.update(set(validate(roof_faces)))
+    add_faces_to_map(bm, list(link_faces), FaceMap.ROOF_HANGS)
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+          <tr>
+              <td>Dict-Comprehension</td>
+              <td>
+              <a href="https://github.com/microsoft/PythonProgrammingPuzzles/blob/506099b8664db2ddefaf1c41cb151743b3751ab3/generators/ICPC.py#L20">Github link to the following code example</a>
+{#                  <a href="https://github.com/neuralmagic/sparseml/pull/510">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+@staticmethod
+def sat(position: List[List[int]], transcript=[[[3, 3], [5, 5], [3, 7]], [[5, 3], [6, 4]]]):
+    board = {(x, y): 0 for x in range(8) for y in range(8) if (x + y) % 2 == 0}  # empty board, 0 = empty
+    for x, y, p in position:
+        assert -2 <= p <= 2 and board[x, y] == 0  # -1, 1 is regular piece, -2, 2 is king
+        board[x, y] = p
+    sign = 1  # player 1 moves first
+    for move in transcript:
+        start, end = tuple(move[0]), tuple(move[-1])
+        p = board[start]  # piece to move
+        assert p * sign > 0, "Moving square must be non-empty and players must be alternate signs"
+        assert all(board[x, y] == 0 for x, y in move if [x, y] != move[0]), "Moved to an occupied square"
+
+        for (x1, y1), (x2, y2) in zip(move, move[1:]):
+            assert abs(p) != 1 or (y2 - y1) * p > 0, "Non-kings can only move forward (in direction of sign)"
+            if abs(x2 - x1) == 1:  # non-jump
+                assert not any(has_a_jump(*a) for a in board if board[a] * p > 0), "Must make a jump if possible"
+                break
+            mid = ((x1 + x2) // 2, (y1 + y2) // 2)
+            assert board[mid] * p < 0, "Can only jump over piece of opposite sign"
+            board[mid] = 0
+        board[start], board[end] = 0, p
+        assert abs(x2 - x1) == 1 or not has_a_jump(*end)
+        if abs(p) == 1 and any(y in {0, 7} for x, y in move[1:]):
+            board[end] *= 2  # king me at the end of turn after any jumps are done!
+        sign *= -1
+
+    return True
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>Dict-Comprehension</td>
+                        <td>
+              <a href="https://github.com/malwaredllc/byob/blob/a6b4c7b0e206b1a60a28eda1fdd86106cabc0797/byob/server.py#L365">Github link to the following code example</a>
+{#                            <a href="https://github.com/angr/angr/pull/3096">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def _print(self, info):
+    lock = self.current_session._lock if self.current_session else self._lock
+    if isinstance(info, str):
+        try:
+            info = json.loads(info)
+        except: pass
+    if isinstance(info, dict):
+        max_key = int(max(map(len, [str(i1) for i1 in info.keys() if i1 if i1 != 'None'])) + 2) if int(max(map(len, [str(i1) for i1 in info.keys() if i1 if i1 != 'None'])) + 2) < 80 else 80
+        max_val = int(max(map(len, [str(i2) for i2 in info.values() if i2 if i2 != 'None'])) + 2) if int(max(map(len, [str(i2) for i2 in info.values() if i2 if i2 != 'None'])) + 2) < 80 else 80
+        key_len = {len(str(i2)): str(i2) for i2 in info.keys() if i2 if i2 != 'None'}
+        keys = {k: key_len[k] for k in sorted(key_len.keys())}
+        with lock:
+            for key in keys.values():
+                if info.get(key) and info.get(key) != 'None':
+                    try:
+                        info[key] = json.loads(key)
+                        self._print(info[key])
+                    except:
+                        if len(str(info.get(key))) > 80:
+                            info[key] = str(info.get(key))[:77] + '...'
+                        info[key] = str(info.get(key)).replace('\n',' ') if not isinstance(info.get(key), datetime.datetime) else str(key).encode().replace("'", '"').replace('True','true').replace('False','false') if not isinstance(key, datetime.datetime) else str(int(time.mktime(key.timetuple())))
+                        util.display('\x20' * 4, end=' ')
+                        util.display(key.ljust(max_key).center(max_key + 2) + info[key].ljust(max_val).center(max_val + 2), color=self._text_color, style=self._text_style)
+    else:
+        with lock:
+            util.display('\x20' * 4, end=' ')
+            util.display(str(info), color=self._text_color, style=self._text_style)
+              </code></pre></div>
+                        </td>
+
+
+          </tr>
+                    <tr>
+              <td>Dict-Comprehension</td>
+              <td>
+              <a href="https://github.com/microsoft/PythonProgrammingPuzzles/blob/506099b8664db2ddefaf1c41cb151743b3751ab3/generators/classic_puzzles.py#L31">Github link to the following code example</a>
+{#                  <a href="https://github.com/mystic123/tensorflow-yolo-v3/pull/109">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+@staticmethod
+def sol(nums):
+    def helper(pairs):
+        if len(pairs) == 2:
+            (x, s), (y, t) = pairs
+            ans = {
+                x + y: f"{s}+{t}",
+                x - y: f"{s}-({t})",
+                y - x: f"{t}-({s})",
+                x * y: f"({s})*({t})"
+            }
+            if y != 0:
+                ans[x / y] = f"({s})/({t})"
+            if x != 0:
+                ans[y / x] = f"({t})/({s})"
+            return ans
+        ans = {y: t
+               for i in range(len(pairs))
+               for x_s in helper(pairs[:i] + pairs[i + 1:]).items()
+               for y, t in helper([x_s, pairs[i]]).items()}
+        if len(pairs) == 3:
+            return ans
+        ans.update({z: u
+                    for i in range(1, 4)
+                    for x_s in helper([pairs[0], pairs[i]]).items()
+                    for y_t in helper(pairs[1:i] + pairs[i + 1:]).items()
+                    for z, u in helper([x_s, y_t]).items()
+                    })
+        return ans
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>Chain-Comparison</td>
+                        <td>
+              <a href="https://github.com/m0mchil/poclbm/blob/2ae15b77df1d17d2ec2748673ba2e8e0a01891c5/socks.py#L353">Github link to the following code example</a>
+{#                            <a href="https://github.com/rockstor/rockstor-core/pull/2350">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def connect(self,destpair):
+    """connect(self,despair)
+    Connects to the specified destination through a proxy.
+    destpar - A tuple of the IP/DNS address and the port number.
+    (identical to socket's connect).
+    To select the proxy server use setproxy().
+    """
+    # Do a minimal input check first
+    if (type(destpair) in (list,tuple)==False) or (len(destpair)<2) or (type(destpair[0])!=str) or (type(destpair[1])!=int):
+        raise GeneralProxyError((5,_generalerrors[5]))
+    if self.__proxy[0] == PROXY_TYPE_SOCKS5:
+        if self.__proxy[2] != None:
+            portnum = self.__proxy[2]
+        else:
+            portnum = 1080
+        _orgsocket.connect(self,(self.__proxy[1],portnum))
+        self.__negotiatesocks5(destpair[0],destpair[1])
+    elif self.__proxy[0] == PROXY_TYPE_SOCKS4:
+        if self.__proxy[2] != None:
+            portnum = self.__proxy[2]
+        else:
+            portnum = 1080
+        _orgsocket.connect(self,(self.__proxy[1],portnum))
+        self.__negotiatesocks4(destpair[0],destpair[1])
+    elif self.__proxy[0] == PROXY_TYPE_HTTP:
+        if self.__proxy[2] != None:
+            portnum = self.__proxy[2]
+        else:
+            portnum = 8080
+        _orgsocket.connect(self,(self.__proxy[1],portnum))
+        self.__negotiatehttp(destpair[0],destpair[1])
+    elif self.__proxy[0] == None:
+        _orgsocket.connect(self,(destpair[0],destpair[1]))
+    else:
+        raise GeneralProxyError((4,_generalerrors[4]))
+              </code></pre></div>
+                        </td>
+
+          </tr>
+                    <tr>
+              <td>Chain-Comparison</td>
+              <td>
+              <a href="https://github.com/speechbrain/speechbrain/blob/d78c00eca113c9f013f2eee4d05947adc1b32ccb/speechbrain/utils/distributed.py#L107">Github link to the following code example</a>
+{#                  <a href="https://github.com/online-ml/river/pull/842">pull request</a>#}
+
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def ddp_init_group(run_opts):
+    if run_opts["distributed_launch"]:
+        if "local_rank" not in run_opts:
+            raise ValueError(
+                "To use DDP backend, start your script with:\n\t"
+                "python -m torch.distributed.launch [args]\n\t"
+                "experiment.py hyperparams.yaml --distributed_launch "
+                "--distributed_backend=nccl"
+            )
+        else:
+            if run_opts["local_rank"] + 1 > torch.cuda.device_count():
+                raise ValueError(
+                    "Killing process " + str() + "\n"
+                    "Not enough GPUs available!"
+                )
+        if "RANK" in os.environ is None or os.environ["RANK"] == "":
+            raise ValueError(
+                "To use DDP backend, start your script with:\n\t"
+                "python -m torch.distributed.launch [args]\n\t"
+                "experiment.py hyperparams.yaml --distributed_launch "
+                "--distributed_backend=nccl"
+            )
+        rank = int(os.environ["RANK"])
+
+        if run_opts["distributed_backend"] == "nccl":
+            if not torch.distributed.is_nccl_available():
+                raise ValueError("NCCL is not supported in your machine.")
+        elif run_opts["distributed_backend"] == "gloo":
+            if not torch.distributed.is_gloo_available():
+                raise ValueError("GLOO is not supported in your machine.")
+        elif run_opts["distributed_backend"] == "mpi":
+            if not torch.distributed.is_mpi_available():
+                raise ValueError("MPI is not supported in your machine.")
+        else:
+            logger.info(
+                run_opts["distributed_backend"]
+                + " communcation protocol doesn't exist."
+            )
+            raise ValueError(
+                run_opts["distributed_backend"]
+                + " communcation protocol doesn't exist."
+            )
+
+        torch.distributed.init_process_group(
+            backend=run_opts["distributed_backend"], rank=rank
+        )
+    else:
+        logger.info(
+            "distributed_launch flag is disabled, "
+            "this experiment will be executed without DDP."
+        )
+        if "local_rank" in run_opts and run_opts["local_rank"] > 0:
+            raise ValueError(
+                "DDP is disabled, local_rank must not be set.\n"
+                "For DDP training, please use --distributed_launch. "
+                "For example:\n\tpython -m torch.distributed.launch "
+                "experiment.py hyperparams.yaml "
+                "--distributed_launch --distributed_backend=nccl"
+            )
+              </code></pre></div>
+              </td>
+
+          </tr>
+                    <tr>
+              <td>Chain-Comparison</td>
+                         <td>
+              <a href="https://github.com/DreamSourceLab/DSView/blob/0af603c132fe87849fc87fe943e8573021a64f94/libsigrokdecode4DSL/decoders/adxl345/pd.py#L373">Github link to the following code example</a>
+{#           <a href="https://github.com/SALib/SALib/pull/496">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def decode(self, ss, es, data):
+    ptype = data[0]
+
+    if ptype == 'CS-CHANGE':
+        cs_old, cs_new = data[1:]
+        if cs_old is not None and cs_old == 1 and cs_new == 0:
+            self.ss, self.es = ss, es
+            self.state = St.ADDRESS_BYTE
+        else:
+            self.state = St.IDLE
+
+    elif ptype == 'BITS':
+        if data[1] is not None:
+            self.mosi = list(reversed(data[1]))
+        if data[2] is not None:
+            self.miso = list(reversed(data[2]))
+
+        if self.mosi is None and self.miso is None:
+            return
+
+        if self.state == St.ADDRESS_BYTE:
+            # OPERATION BIT
+            op_bit = self.get_bit(Channel.MOSI)
+            self.put(op_bit[1], op_bit[2], self.out_ann,
+                [Ann.READ if op_bit[0] else Ann.WRITE, operations[op_bit[0]]])
+            self.operation = Operation.READ if op_bit[0] else Operation.WRITE
+            # MULTIPLE-BYTE BIT
+            mb_bit = self.get_bit(Channel.MOSI)
+            self.put(mb_bit[1], mb_bit[2], self.out_ann, [Ann.MB, number_bytes[mb_bit[0]]])
+
+            # REGISTER 6-BIT ADDRESS
+            self.address = 0
+            start_sample = self.mosi[0][1]
+            addr_bit = []
+            for i in range(6):
+                addr_bit = self.get_bit(Channel.MOSI)
+                self.address |= addr_bit[0]
+                self.address <<= 1
+            self.address >>= 1
+            self.put(start_sample, addr_bit[2], self.out_ann,
+                [Ann.REG_ADDRESS, ['ADDRESS: {$}', 'ADDR: {$}', '{$}', '@%02X' % self.address]])
+            self.ss = -1
+            self.state = St.DATA
+
+        elif self.state == St.DATA:
+            self.reg.extend(self.mosi if self.operation == Operation.WRITE else self.miso)
+
+            self.mosi, self.miso = [], []
+            if self.ss == -1:
+                self.ss, self.es = self.reg[0][1], es
+                self.samples_per_bit = self.reg[0][2] - self.ss
+
+            if len(self.reg) < 8:
+                return
+            else:
+                reg_value = 0
+                reg_bit = []
+                for offset in range(7, -1, -1):
+                    reg_bit = self.reg.pop(0)
+
+                    mask = reg_bit[0] << offset
+                    reg_value |= mask
+
+                if self.address < 0x00 or self.address > 0x39:
+                    return
+
+                if self.address in [0x32, 0x34, 0x36]:
+                    self.start_index = self.ss
+
+                if 0x1D > self.address >= 0x00:
+                    self.put(self.ss, reg_bit[2], self.out_ann, [Ann.REG_ADDRESS, [str(self.address)]])
+                    self.put(self.ss, reg_bit[2], self.out_ann, [Ann.REG_DATA, [str(reg_value)]])
+                else:
+                    self.put(self.ss, reg_bit[2], self.out_ann, [Ann.REG_ADDRESS, registers[self.address]])
+                    handle_reg = getattr(self, 'handle_reg_0x%02x' % self.address)
+                    handle_reg(reg_value)
+
+                self.reg = []
+                self.address += 1
+                self.ss = -1
+              </code></pre></div>
+                         </td>
+
+          </tr>
+                             <tr>
+              <td>Truth-Value-Test</td>
+              <td>
+              <a href="https://github.com/crytic/slither/blob/4c976d5af56219eeef079e03a35009af3e03644d/slither/utils/output.py#L221">Github link to the following code example</a>
+{#                  <a href="https://github.com/PyTorchLightning/pytorch-lightning/pull/11551">pull request</a>#}
+
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def _convert_to_description(d):
+    if isinstance(d, str):
+        return d
+
+    if not isinstance(d, SourceMapping):
+        raise SlitherError(f"{d} does not inherit from SourceMapping, conversion impossible")
+
+    if isinstance(d, Node):
+        if d.expression:
+            return f"{d.expression} ({d.source_mapping})"
+        return f"{str(d)} ({d.source_mapping})"
+
+    if hasattr(d, "canonical_name"):
+        return f"{d.canonical_name} ({d.source_mapping})"
+
+    if hasattr(d, "name"):
+        return f"{d.name} ({d.source_mapping})"
+
+    raise SlitherError(f"{type(d)} cannot be converted (no name, or canonical_name")
+              </code></pre>
+                             </div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>Truth-Value-Test</td>
+                         <td>
+              <a href="https://github.com/Confusezius/Deep-Metric-Learning-Baselines/blob/60772745e28bc90077831bb4c9f07a233e602797/evaluate.py#L100">Github link to the following code example</a>
+{#                             <a href="https://github.com/microsoft/unilm/pull/645">pull request</a>#}
+
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def measure(self, model, epoch):
+    """
+    Compute distance ratios of intra- and interclass distance.
+    Args:
+        model: PyTorch Network, network that produces the resp. embeddings.
+        epoch: Current epoch.
+    Returns:
+        Nothing!
+    """
+    if epoch%self.update_epochs: return
+
+    self.epochs.append(epoch)
+
+    torch.cuda.empty_cache()
+
+    _ = model.eval()
+
+    #Compute Embeddings
+    with torch.no_grad():
+        feature_coll, target_coll = [],[]
+        data_iter = tqdm(self.checkdata, desc='Estimating Data Distances...')
+        for idx, data in enumerate(data_iter):
+            input_img, target = data[1], data[0]
+            features = model(input_img.to(self.pars.device))
+            feature_coll.extend(features.cpu().detach().numpy().tolist())
+            target_coll.extend(target.numpy().tolist())
+              </code></pre></div>
+                         </td>
+
+
+          </tr>
+                    <tr>
+              <td>Truth-Value-Test</td>
+                        <td>
+              <a href="https://github.com/LinOTP/LinOTP/blob/329083271616af9b4c86f546cf78b12d6a2f5a3b/linotp/tests/functional/test_emailtoken.py#L97">Github link to the following code example</a>
+{#                            <a href="https://github.com/yqchilde/JDMemberCloseAccount/pull/132">pull request</a>#}
+
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def test_0000_default(self):
+    """
+    Test the default case: enroll, assign, send challenge, get successful response
+    """
+    #
+    # check: correct otp and pin should be ok
+    #
+
+    response, otp = self._trigger_challenge()
+    self._assert_email_sent(response)
+
+    response = self.make_validate_request(
+        "check", params={"user": "root", "pass": self.pin + otp}
+    )
+    response_json = response.json
+    assert response_json["result"]["status"]
+    assert response_json["result"]["value"]
+
+    #
+    # check: wrong pin should fail
+    #
+
+    response, otp = self._trigger_challenge()
+    self._assert_email_sent(response)
+
+    response = self.make_validate_request(
+        "check", params={"user": "root", "pass": "4321" + otp}
+    )
+    response_json = response.json
+    assert response_json["result"]["status"]
+    assert not response_json["result"]["value"]
+
+    #
+    # replay with correct pin should fail
+    #
+
+    time.sleep(5)
+    response = self.make_validate_request(
+        "check", params={"user": "root", "pass": self.pin + otp}
+    )
+    response_json = response.json
+    assert response_json["result"]["status"]
+    assert not response_json["result"]["value"]
+
+    #
+    # check with wrong otp should fail as well
+    #
+
+    response, otp = self._trigger_challenge()
+    self._assert_email_sent(response)
+
+    response = self.make_validate_request(
+        "check", params={"user": "root", "pass": self.pin + "123456"}
+    )
+    response_json = response.json
+    assert response_json["result"]["status"]
+    assert not response_json["result"]["value"]
+
+    #
+    # check with correct otp and pin should be ok
+    #
+
+    response, otp = self._trigger_challenge()
+    self._assert_email_sent(response)
+
+    response = self.make_validate_request(
+        "check", params={"user": "root", "pass": self.pin + otp}
+    )
+    response_json = response.json
+    assert response_json["result"]["status"]
+    assert response_json["result"]["value"]
+
+    return
+              </code></pre></div>
+                        </td>
+
+          </tr>
+                             <tr>
+              <td>Loop-Else</td>
+                                 <td>
+              <a href="https://github.com/wikimedia/pywikibot/blob/265158f2def0b3756ac60cee5e122664ff35f70f/tests/site_tests.py#L474">Github link to the following code example</a>
+{#              <a href="https://github.com/sympy/sympy/pull/22896">pull request</a>#}
+
+              <div onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def test_alldeletedrevisions(self):
+    """Test the site.alldeletedrevisions() method."""
+    mysite = self.get_site()
+    myuser = mysite.user()
+    if not mysite.has_right('deletedhistory'):
+        self.skipTest(
+            "You don't have permission to view the deleted revisions "
+            'on {}.'.format(mysite))
+    prop = ['ids', 'timestamp', 'flags', 'user', 'comment']
+    gen = mysite.alldeletedrevisions(total=10, prop=prop)
+
+    for data in gen:
+        break
+    else:
+        self.skipTest(f'{myuser} does not have deleted edits.')
+    self.assertIn('revisions', data)
+    for drev in data['revisions']:
+        for key in ('revid', 'timestamp', 'user', 'comment'):
+            self.assertIn(key, drev)
+
+    with self.subTest(start='2008-10-11T01:02:03Z', reverse=False,
+                      prop=prop):
+        for item in mysite.alldeletedrevisions(
+            start='2008-10-11T01:02:03Z',
+            total=5
+        ):
+            for drev in item['revisions']:
+                self.assertIsInstance(drev, dict)
+                self.assertLessEqual(drev['timestamp'],
+                                     '2008-10-11T01:02:03Z')
+
+    with self.subTest(start='2008-10-11T01:02:03Z', reverse=True,
+                      prop=prop):
+        for item in mysite.alldeletedrevisions(
+            start='2008-10-11T01:02:03Z',
+            total=5
+        ):
+            for drev in item['revisions']:
+                self.assertIsInstance(drev, dict)
+                self.assertGreaterEqual(drev['timestamp'],
+                                        '2008-10-11T01:02:03Z')
+
+    # start earlier than end
+    with self.subTest(start='2008-09-03T00:00:01Z',
+                      end='2008-09-03T23:59:59Z',
+                      reverse=False,
+                      prop=prop), self.assertRaises(AssertionError):
+        gen = mysite.alldeletedrevisions(start='2008-09-03T00:00:01Z',
+                                         end='2008-09-03T23:59:59Z',
+                                         total=5)
+        next(gen)
+
+    # reverse: end earlier than start
+    with self.subTest(start='2008-09-03T23:59:59Z',
+                      end='2008-09-03T00:00:01Z',
+                      reverse=True,
+                      prop=prop), self.assertRaises(AssertionError):
+        gen = mysite.alldeletedrevisions(start='2008-09-03T23:59:59Z',
+                                         end='2008-09-03T00:00:01Z',
+                                         total=5, reverse=True)
+        next(gen)
+              </code></pre></div></td>
+
+          </tr>
+          <tr>
+              <td>Loop-Else</td>
+                        <td>
+              <a href="https://github.com/GeospatialPython/pyshp/blob/b65a2b76968c5fe7698c3f7ea0c429e81a5f870a/shapefile.py#L484">Github link to the following code example</a>
+{#                            <a href="https://github.com/srusskih/SublimeJEDI/pull/330">pull request</a>#}
+{#              <a href="https://github.com/pathak22/noreward-rl/blob/master/src/a3c.py">source code</a> <a href="https://github.com/pathak22/noreward-rl/pull/63">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+@property
+def __geo_interface__(self):
+    if self.shapeType in [POINT, POINTM, POINTZ]:
+        # point
+        if len(self.points) == 0:
+            # the shape has no coordinate information, i.e. is 'empty'
+            # the geojson spec does not define a proper null-geometry type
+            # however, it does allow geometry types with 'empty' coordinates to be interpreted as null-geometries
+            return {'type':'Point', 'coordinates':tuple()}
+        else:
+            return {
+            'type': 'Point',
+            'coordinates': tuple(self.points[0])
+            }
+    elif self.shapeType in [MULTIPOINT, MULTIPOINTM, MULTIPOINTZ]:
+        if len(self.points) == 0:
+            # the shape has no coordinate information, i.e. is 'empty'
+            # the geojson spec does not define a proper null-geometry type
+            # however, it does allow geometry types with 'empty' coordinates to be interpreted as null-geometries
+            return {'type':'MultiPoint', 'coordinates':[]}
+        else:
+            # multipoint
+            return {
+            'type': 'MultiPoint',
+            'coordinates': [tuple(p) for p in self.points]
+            }
+    elif self.shapeType in [POLYLINE, POLYLINEM, POLYLINEZ]:
+        if len(self.parts) == 0:
+            # the shape has no coordinate information, i.e. is 'empty'
+            # the geojson spec does not define a proper null-geometry type
+            # however, it does allow geometry types with 'empty' coordinates to be interpreted as null-geometries
+            return {'type':'LineString', 'coordinates':[]}
+        elif len(self.parts) == 1:
+            # linestring
+            return {
+            'type': 'LineString',
+            'coordinates': [tuple(p) for p in self.points]
+            }
+        else:
+            # multilinestring
+            ps = None
+            coordinates = []
+            for part in self.parts:
+                if ps == None:
+                    ps = part
+                    continue
+                else:
+                    coordinates.append([tuple(p) for p in self.points[ps:part]])
+                    ps = part
+            else:
+                coordinates.append([tuple(p) for p in self.points[part:]])
+            return {
+            'type': 'MultiLineString',
+            'coordinates': coordinates
+            }
+    elif self.shapeType in [POLYGON, POLYGONM, POLYGONZ]:
+        if len(self.parts) == 0:
+            # the shape has no coordinate information, i.e. is 'empty'
+            # the geojson spec does not define a proper null-geometry type
+            # however, it does allow geometry types with 'empty' coordinates to be interpreted as null-geometries
+            return {'type':'Polygon', 'coordinates':[]}
+        else:
+            # get all polygon rings
+            rings = []
+            for i in xrange(len(self.parts)):
+                # get indexes of start and end points of the ring
+                start = self.parts[i]
+                try:
+                    end = self.parts[i+1]
+                except IndexError:
+                    end = len(self.points)
+
+                # extract the points that make up the ring
+                ring = [tuple(p) for p in self.points[start:end]]
+                rings.append(ring)
+
+            # organize rings into list of polygons, where each polygon is defined as list of rings.
+            # the first ring is the exterior and any remaining rings are holes (same as GeoJSON).
+            polys = organize_polygon_rings(rings, self._errors)
+
+            # if VERBOSE is True, issue detailed warning about any shape errors
+            # encountered during the Shapefile to GeoJSON conversion
+            if VERBOSE and self._errors:
+                header = 'Possible issue encountered when converting Shape #{} to GeoJSON: '.format(self.oid)
+                orphans = self._errors.get('polygon_orphaned_holes', None)
+                if orphans:
+                    msg = header + 'Shapefile format requires that all polygon interior holes be contained by an exterior ring, \
+but the Shape contained interior holes (defined by counter-clockwise orientation in the shapefile format) that were \
+orphaned, i.e. not contained by any exterior rings. The rings were still included but were \
+encoded as GeoJSON exterior rings instead of holes.'
+                    logger.warning(msg)
+                only_holes = self._errors.get('polygon_only_holes', None)
+                if only_holes:
+                    msg = header + 'Shapefile format requires that polygons contain at least one exterior ring, \
+but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were \
+still included but were encoded as GeoJSON exterior rings instead of holes.'
+                    logger.warning(msg)
+
+            # return as geojson
+            if len(polys) == 1:
+                return {
+                'type': 'Polygon',
+                'coordinates': polys[0]
+                }
+            else:
+                return {
+                'type': 'MultiPolygon',
+                'coordinates': polys
+                }
+
+    else:
+        raise Exception('Shape type "%s" cannot be represented as GeoJSON.' % SHAPETYPE_LOOKUP[self.shapeType])
+              </code></pre></div>
+                        </td>
+
+          </tr>
+                    <tr>
+              <td>Loop-Else</td>
+                        <td>
+              <a href="https://github.com/mozilla/bleach/blob/13d6c0c91d2b1bef52ad2b5a2812f76dda18298f/bleach/_vendor/html5lib/filters/sanitizer.py#L889">Github link to the following code example</a>
+{#                            <a href="https://github.com/PaddlePaddle/Paddle/pull/39119">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def sanitize_css(self, style):
+        # disallow urls
+        style = re.compile(r'url\s*\(\s*[^\s)]+?\s*\)\s*').sub(' ', style)
+
+        # gauntlet
+        if not re.match(r"""^([:,;#%.\sa-zA-Z0-9!]|\w-\w|'[\s\w]+'|"[\s\w]+"|\([\d,\s]+\))*$""", style):
+            return ''
+        if not re.match(r"^\s*([-\w]+\s*:[^:;]*(;\s*|$))*$", style):
+            return ''
+
+        clean = []
+        for prop, value in re.findall(r"([-\w]+)\s*:\s*([^:;]*)", style):
+            if not value:
+                continue
+            if prop.lower() in self.allowed_css_properties:
+                clean.append(prop + ': ' + value + ';')
+            elif prop.split('-')[0].lower() in ['background', 'border', 'margin',
+                                                'padding']:
+                for keyword in value.split():
+                    if keyword not in self.allowed_css_keywords and \
+                            not re.match(r"^(#[0-9a-fA-F]+|rgb\(\d+%?,\d*%?,?\d*%?\)?|\d{0,2}\.?\d{0,2}(cm|em|ex|in|mm|pc|pt|px|%|,|\))?)$", keyword):  # noqa
+                        break
+                else:
+                    clean.append(prop + ': ' + value + ';')
+            elif prop.lower() in self.allowed_svg_properties:
+                clean.append(prop + ': ' + value + ';')
+
+        return ' '.join(clean)
+              </code></pre></div>
+                        </td>
+
+          </tr>
+                                       <tr>
+              <td>Assign-Multi-Targets</td>
+              <td>
+              <a href="https://github.com/airctic/icevision/blob/ffc0815c4f84a817744d151b051391ec5e2690c6/icevision/visualize/draw_data.py#L563">Github link to the following code example</a>
+{#                  <a href="https://github.com/postgres/pgadmin4/pull/67">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def draw_mask(
+    img: np.ndarray,
+    mask: MaskArray,
+    color: Tuple[int, int, int],
+    blend: float = 0.5,
+    border_thickness: int = 7,
+):
+    # Border thickness must be an odd integer
+    if border_thickness % 2 == 0:
+        # TODO: Shall we throw an error, or change the value to the nearest
+        # even integer automatically and raise a warning?
+        raise ValueError(
+            f"`border_thickness` must be an odd number. You entered {border_thickness}"
+        )
+    img = PIL.Image.fromarray(img)
+    w, h = img.size
+
+    mask_idxs = np.where(mask.data)
+
+    # Add alpha with 0 transparency. We draw the mask with border color first
+    color = np.append(color, 255)
+    mask_arr = np.zeros((h, w, 4), dtype=np.uint8)
+    mask_arr[mask_idxs[1:]] = color
+
+    # Now create a second mask and draw the desired color on top of the
+    # border mask. If `border_thickness` is 0, this replaces the border mask
+    _mask = Image.fromarray(mask_arr)
+    _mask = _mask.filter(PIL.ImageFilter.MinFilter(border_thickness))
+    _mask_idx = np.where(_mask.convert("L", palette=Image.ADAPTIVE))
+    mask_arr[_mask_idx] = np.append(color[:3], blend * 255)
+
+    # Create RGBA PIL mask image
+    mask_pil = PIL.Image.fromarray(mask_arr, mode="RGBA")
+
+    # Blend everything keeping the alpha
+    # Key concept is that alpha for non-mask pixels are 0 (transparent)
+    img.putalpha(255)
+    img = PIL.Image.alpha_composite(img, mask_pil)
+    return np.array(img)
+              </code></pre></div>
+              </td>
+          </tr>
+                    <tr>
+              <td>Assign-Multi-Targets</td>
+                       <td>
+              <a href="https://github.com/yt-dlp/yt-dlp/blob/83c4970e52839ce8761ec61bd19d549aed7d7920/yt_dlp/extractor/douyutv.py#L72">Github link to the following code example</a>
+{#                           <a href="https://github.com/pytube/pytube/pull/1204">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def _real_extract(self, url):
+        url = url.replace('vmobile.', 'v.')
+        video_id = self._match_id(url)
+
+        webpage = self._download_webpage(url, video_id)
+
+        room_info = self._parse_json(self._search_regex(
+            r'var\s+\$ROOM\s*=\s*({.+});', webpage, 'room info'), video_id)
+
+        video_info = None
+
+        for trial in range(5):
+            # Sometimes Douyu rejects our request. Let's try it more times
+            try:
+                video_info = self._download_json(
+                    'https://vmobile.douyu.com/video/getInfo', video_id,
+                    query={'vid': video_id},
+                    headers={
+                        'Referer': url,
+                        'x-requested-with': 'XMLHttpRequest',
+                    })
+                break
+            except ExtractorError:
+                self._sleep(1, video_id)
+
+        if not video_info:
+            raise ExtractorError('Can\'t fetch video info')
+
+        formats = self._extract_m3u8_formats(
+            video_info['data']['video_url'], video_id,
+            entry_protocol='m3u8_native', ext='mp4')
+
+        upload_date = unified_strdate(self._html_search_regex(
+            r'<em>上传时间：</em><span>([^<]+)</span>', webpage,
+            'upload date', fatal=False))
+
+        uploader = uploader_id = uploader_url = None
+        mobj = re.search(
+            r'(?m)<a[^>]+href="/author/([0-9a-zA-Z]+)".+?<strong[^>]+title="([^"]+)"',
+            webpage)
+        if mobj:
+            uploader_id, uploader = mobj.groups()
+            uploader_url = urljoin(url, '/author/' + uploader_id)
+
+        return {
+            'id': video_id,
+            'title': room_info['name'],
+            'formats': formats,
+            'duration': room_info.get('duration'),
+            'thumbnail': room_info.get('pic'),
+            'upload_date': upload_date,
+            'uploader': uploader,
+            'uploader_id': uploader_id,
+            'uploader_url': uploader_url,
+        }
+              </code></pre></div></td>
+
+
+          </tr>
+                    <tr>
+              <td>Assign-Multi-Targets</td>
+                        <td>
+              <a href="https://github.com/richardkiss/pycoin/blob/f9aa7ad64f95013f7aab87b9d7dc7735b68b2f1a/pycoin/networks/parseable_str.py#L40">Github link to the following code example</a>
+{#               <a href="https://github.com/python/pyperformance/pull/128">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def b58_double_sha256(s):
+    data = parse_b58(s)
+    if data:
+        data, the_hash = data[:-4], data[-4:]
+        if double_sha256(data)[:4] == the_hash:
+            return data
+              </code></pre></div></td>
+
+          </tr>
+                                                 <tr>
+              <td>Star</td>
+              <td>
+              <a href="https://github.com/3b1b/videos/blob/134b8403b427b0ec793a11397e88893a3704c27d/_2017/eoc/chapter3.py#L2066">Github link to the following code example</a>
+{#                  <a href="https://github.com/micropython/micropython-lib/pull/477">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def nudge_square(self):
+    square = self.square
+    area_label = self.area_label
+    bottom_brace, right_brace = self.braces
+
+    bigger_square = Square(
+        side_length = self.square_width + self.d_sqrt_x,
+        **self.bigger_square_color_kwargs
+    )
+    bigger_square.move_to(self.square_corner, UP+LEFT)
+
+    square_copy = square.copy()
+
+    lines = VGroup(*[
+        DashedLine(
+            ORIGIN,
+            (self.square_width + MED_LARGE_BUFF)*vect,
+            color = WHITE,
+            stroke_width = 3
+        ).shift(s.get_corner(corner))
+        for corner, vect in [(DOWN+LEFT, RIGHT), (UP+RIGHT, DOWN)]
+        for s in [square, bigger_square]
+    ])
+    little_braces = VGroup(*[
+        Brace(VGroup(*line_pair), vect, buff = 0)
+        for line_pair, vect in [(lines[:2], RIGHT), (lines[2:], DOWN)]
+    ])
+    for brace in little_braces:
+        tex = brace.get_text("$d\\sqrt{x}$", buff = SMALL_BUFF)
+        tex.scale(0.8)
+        brace.add(tex)
+
+    area_increase = OldTexText("$dx$ = New area")
+    area_increase.set_color(bigger_square.get_color())
+    area_increase.next_to(square, RIGHT, 4)
+
+    question = OldTex("\\frac{d\\sqrt{x}}{dx} = ???")
+    VGroup(*question[5:7]).set_color(bigger_square.get_color())
+    question.next_to(
+        area_increase, DOWN,
+        aligned_edge = LEFT,
+        buff = LARGE_BUFF
+    )
+
+    self.play(
+        Transform(square_copy, bigger_square),
+        Animation(square),
+        Animation(area_label),
+        bottom_brace.next_to, bigger_square, DOWN, SMALL_BUFF, LEFT,
+        right_brace.next_to, bigger_square, RIGHT, SMALL_BUFF, UP,
+    )
+    self.play(Write(area_increase))
+    self.play(*it.chain(
+        list(map(ShowCreation, lines)),
+        list(map(FadeIn, little_braces))
+    ))
+    self.play(Write(question))
+    self.wait()
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>Star</td>
+              <td>
+              <a href="https://github.com/hueyxy/FaceRecognition/blob/035245da87c47945eb35d6afa75289f423bca0df/detect.py#L222">Github link to the following code example</a>
+{#                  <a href="https://github.com/MhLiao/MaskTextSpotterV3/pull/72">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+@torch.no_grad()
+def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
+        source=ROOT / 'data/images',  # file/dir/URL/glob, 0 for webcam
+        imgsz=640,  # inference size (pixels)
+        conf_thres=0.25,  # confidence threshold
+        iou_thres=0.45,  # NMS IOU threshold
+        max_det=1000,  # maximum detections per image
+        device='',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+        view_img=False,  # show results
+        save_txt=False,  # save results to *.txt
+        save_conf=False,  # save confidences in --save-txt labels
+        save_crop=False,  # save cropped prediction boxes
+        nosave=False,  # do not save images/videos
+        classes=None,  # filter by class: --class 0, or --class 0 2 3
+        agnostic_nms=False,  # class-agnostic NMS
+        augment=False,  # augmented inference
+        visualize=False,  # visualize features
+        update=False,  # update all models
+        project=ROOT / 'runs/detect',  # save results to project/name
+        name='exp',  # save results to project/name
+        exist_ok=False,  # existing project/name ok, do not increment
+        line_thickness=3,  # bounding box thickness (pixels)
+        hide_labels=False,  # hide labels
+        hide_conf=False,  # hide confidences
+        half=False,  # use FP16 half-precision inference
+        dnn=False,  # use OpenCV DNN for ONNX inference
+        ):
+    source = str(source)
+    save_img = not nosave and not source.endswith('.txt')  # save inference images
+    is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
+    is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
+    webcam = source.isnumeric() or source.endswith('.txt') or (is_url and not is_file)
+    if is_url and is_file:
+        source = check_file(source)  # download
+
+    # Directories
+    save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
+    (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
+
+    # Load model
+    device = select_device(device)
+    model = DetectMultiBackend(weights, device=device, dnn=dnn)
+    stride, names, pt, jit, onnx = model.stride, model.names, model.pt, model.jit, model.onnx
+    imgsz = check_img_size(imgsz, s=stride)  # check image size
+
+    # Half
+    half &= pt and device.type != 'cpu'  # half precision only supported by PyTorch on CUDA
+    if pt:
+        model.model.half() if half else model.model.float()
+
+    # Dataloader
+    if webcam:
+        view_img = check_imshow()
+        cudnn.benchmark = True  # set True to speed up constant image size inference
+        dataset = LoadStreams(source, img_size=imgsz, stride=stride, auto=pt and not jit)
+        bs = len(dataset)  # batch_size
+    else:
+        dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt and not jit)
+        bs = 1  # batch_size
+    vid_path, vid_writer = [None] * bs, [None] * bs
+
+    # Run inference
+    if pt and device.type != 'cpu':
+        model(torch.zeros(1, 3, *imgsz).to(device).type_as(next(model.model.parameters())))  # warmup
+    dt, seen = [0.0, 0.0, 0.0], 0
+    for path, im, im0s, vid_cap, s in dataset:
+        t1 = time_sync()
+        im = torch.from_numpy(im).to(device)
+        im = im.half() if half else im.float()  # uint8 to fp16/32
+        im /= 255  # 0 - 255 to 0.0 - 1.0
+        if len(im.shape) == 3:
+            im = im[None]  # expand for batch dim
+        t2 = time_sync()
+        dt[0] += t2 - t1
+
+        # Inference
+        visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
+        pred = model(im, augment=augment, visualize=visualize)
+        t3 = time_sync()
+        dt[1] += t3 - t2
+
+        # NMS
+        pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
+        dt[2] += time_sync() - t3
+
+        # Second-stage classifier (optional)
+        # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
+
+        # Process predictions
+        for i, det in enumerate(pred):  # per image
+            seen += 1
+            if webcam:  # batch_size >= 1
+                p, im0, frame = path[i], im0s[i].copy(), dataset.count
+                s += f'{i}: '
+            else:
+                p, im0, frame = path, im0s.copy(), getattr(dataset, 'frame', 0)
+
+            p = Path(p)  # to Path
+            save_path = str(save_dir / p.name)  # im.jpg
+            txt_path = str(save_dir / 'labels' / p.stem) + ('' if dataset.mode == 'image' else f'_{frame}')  # im.txt
+            s += '%gx%g ' % im.shape[2:]  # print string
+            gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+            imc = im0.copy() if save_crop else im0  # for save_crop
+            annotator = Annotator(im0, line_width=line_thickness, example=str(names))
+            if len(det):
+                # Rescale boxes from img_size to im0 size
+                det[:, :4] = scale_coords(im.shape[2:], det[:, :4], im0.shape).round()
+
+                # Print results
+                for c in det[:, -1].unique():
+                    n = (det[:, -1] == c).sum()  # detections per class
+                    s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+
+                # Write results
+                for *xyxy, conf, cls in reversed(det):
+                    if save_txt:  # Write to file
+                        xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
+                        line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
+                        with open(txt_path + '.txt', 'a') as f:
+                            f.write(('%g ' * len(line)).rstrip() % line + '\n')
+
+                    if save_img or save_crop or view_img:  # Add bbox to image
+                        c = int(cls)  # integer class
+                        label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
+                        annotator.box_label(xyxy, label, color=colors(c, True))
+                        if save_crop:
+                            save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+
+            # Print time (inference-only)
+            LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s)')
+
+            # Stream results
+            im0 = annotator.result()
+            if view_img:
+                cv2.imshow(str(p), im0)
+                cv2.waitKey(1)  # 1 millisecond
+
+            # Save results (image with detections)
+            if save_img:
+                if dataset.mode == 'image':
+                    cv2.imwrite(save_path, im0)
+                else:  # 'video' or 'stream'
+                    if vid_path[i] != save_path:  # new video
+                        vid_path[i] = save_path
+                        if isinstance(vid_writer[i], cv2.VideoWriter):
+                            vid_writer[i].release()  # release previous video writer
+                        if vid_cap:  # video
+                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                        else:  # stream
+                            fps, w, h = 30, im0.shape[1], im0.shape[0]
+                            save_path += '.mp4'
+                        vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
+                    vid_writer[i].write(im0)
+
+    # Print results
+    t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
+    LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
+    if save_txt or save_img:
+        s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
+        LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
+    if update:
+        strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>Star</td>
+              <td>
+              <a href="https://github.com/casbin/pycasbin/blob/353f919bd1e6e99fe450f0b983c1860bbd4f2734/tests/test_rbac_api.py#L131">Github link to the following code example</a>
+{#              <a href="https://github.com/xonsh/xonsh/pull/4666">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def test_has_permission_for_user(self):
+    e = self.get_enforcer(
+        get_examples("basic_without_resources_model.conf"),
+        get_examples("basic_without_resources_policy.csv"),
+    )
+    self.assertTrue(e.has_permission_for_user("alice", *["read"]))
+    self.assertFalse(e.has_permission_for_user("alice", *["write"]))
+    self.assertFalse(e.has_permission_for_user("bob", *["read"]))
+    self.assertTrue(e.has_permission_for_user("bob", *["write"]))
+              </code></pre></div>
+              </td>
+
+          </tr>
+                                                           <tr>
+              <td>For-Multi-Targets</td>
+              <td>
+              <a href="https://github.com/tribe29/checkmk/blob/71aaa0abe418e1972ac31e759fd442cd2076afc3/tests/unit/cmk/utils/structured_data/test_structured_data.py#L885">Github link to the following code example</a>
+{#                  <a href="https://github.com/pytube/pytube/pull/1204">pull request</a>#}
+
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def test_real_merge_with_get_children(
+    tree_name: HostName, edges: Sequence[str], sub_children: Sequence[tuple[str, Sequence[str]]]
+) -> None:
+    tree_store = _get_tree_store()
+
+    tree = tree_store.load(host_name=HostName("tree_old_addresses")).merge_with(
+        tree_store.load(host_name=tree_name)
+    )
+
+    assert id(tree) == id(tree)
+    assert tree.is_equal(tree)
+    for edge in edges:
+        assert tree.get_node((edge,)) is not None
+
+    for m_name, path in sub_children:
+        m = getattr(tree, m_name)
+        assert m is not None
+        assert m(path) is not None
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>For-Multi-Targets</td>
+              <td>
+              <a href="https://github.com/tribe29/checkmk/blob/71aaa0abe418e1972ac31e759fd442cd2076afc3/tests/unit/cmk/base/plugins/agent_based/test_section_properties.py#L34">Github link to the following code example</a>
+{#                  <a href="https://github.com/videoflow/videoflow/pull/130">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def test_section_detection_uses_sysdescr_or_sysobjid(
+    fix_register: FixRegister,
+) -> None:
+    """Make sure the first OID is the system description or the system object ID
+    Checking the system description or the system object ID first increases performance
+    massively, because we can reduce the number of devices for which the subsequent OIDs
+    are fetched, based on an OID information we fetch anyway.
+    You should really have an exceptionally good reason to add something here.
+    The known exceptions cannot easily be fixed, because introducing a too strict
+    criterion is an incompatible change.
+    In most of the cases I was unable to spot the identifying feature of the system
+    description.
+    """
+
+    allowed_oids = {
+        ".1.3.6.1.2.1.1.1.0",  # system description
+        ".1.3.6.1.2.1.1.2.0",  # system object ID
+    }
+
+    known_exceptions = {
+        ".1.3.6.1.2.1.2.2.1.*": {"if", "inv_if"},
+        ".1.3.6.1.2.1.25.1.1.0": {"hr_cpu", "hr_fs", "hr_ps"},
+        ".1.3.6.1.2.1.31.1.1.1.6.*": {"if64", "if64adm"},
+        ".1.3.6.1.2.1.43.*": {
+            "printer_alerts",
+            "printer_input",
+            "printer_output",
+            "printer_pages",
+            "printer_supply",
+        },
+        ".1.3.6.1.2.1.47.1.1.1.1.*": {"snmp_extended_info"},
+        ".1.3.6.1.2.1.105.1.3.1.1.*": {"pse_poe"},
+        ".1.3.6.1.4.1.14848.2.1.1.1.0": {"etherbox"},
+        ".1.3.6.1.4.1.2036.2.1.1.4.0": {"snmp_quantum_storage_info"},
+        ".1.3.6.1.4.1.232.2.2.4.2.0": {
+            "hp_proliant_cpu",
+            "hp_proliant_da_cntlr",
+            "hp_proliant_da_phydrv",
+            "hp_proliant_fans",
+            "hp_proliant_mem",
+            "hp_proliant_power",
+            "hp_proliant_psu",
+            "hp_proliant_raid",
+            "hp_proliant_systeminfo",
+            "hp_proliant_temp",
+            "hp_sts_drvbox",
+        },
+        ".1.3.6.1.4.1.30155.2.1.1.0": {"openbsd_sensors"},
+        ".1.3.6.1.4.1.6302.2.1.1.1.0": {"emerson_stat", "emerson_temp"},
+        ".1.3.6.1.4.1.674.*": {
+            "dell_compellent_controller",
+            "dell_compellent_disks",
+            "dell_compellent_enclosure",
+            "dell_compellent_folder",
+            "dell_hw_info",
+        },
+    }
+
+    for section in fix_register.snmp_sections.values():
+        for (first_checked_oid, *_rest1), *_rest2 in (  #
+            criterion for criterion in section.detect_spec if criterion  #
+        ):
+            if first_checked_oid in allowed_oids:
+                continue
+            assert str(section.name) in known_exceptions.get(
+                first_checked_oid, ()
+            ), f"""
+            If you've made it here, you have added a case to the known exceptions above.
+            Even worse: You may have added an OID to the list of OIDs that are fetched
+            from *all SNMP devices* known to the Checkmk site. Please reconsider!
+            First OID fetched by {section.name}: {first_checked_oid}
+            """
+
+              </code></pre></div>
+              </td>
+
+
+          </tr>
+                    <tr>
+              <td>For-Multi-Targets</td>
+              <td>
+              <a href="https://github.com/quantumlib/OpenFermion/blob/de0290e64719bb5eae8dc61003cfacdef16dc862/src/openfermion/circuits/unitary_cc.py#L21">Github link to the following code example</a>
+{#                  <a href="https://github.com/DenisTome/Lifting-from-the-Deep-release/pull/58">pull request</a>#}
+              <div  onclick="ExampleClick(this)",method=['GET','POST']><pre><code>
+def uccsd_generator(single_amplitudes, double_amplitudes, anti_hermitian=True):
+    generator = FermionOperator()
+
+    # Re-format inputs (ndarrays to lists) if necessary
+    if (isinstance(single_amplitudes, numpy.ndarray) or
+            isinstance(double_amplitudes, numpy.ndarray)):
+        single_amplitudes, double_amplitudes = uccsd_convert_amplitude_format(
+            single_amplitudes, double_amplitudes)
+
+    # Add single excitations
+    for (i, j), t_ij in single_amplitudes:
+        i, j = int(i), int(j)
+        generator += FermionOperator(((i, 1), (j, 0)), t_ij)
+        if anti_hermitian:
+            generator += FermionOperator(((j, 1), (i, 0)), -t_ij)
+
+    # Add double excitations
+    for (i, j, k, l), t_ijkl in double_amplitudes:
+        i, j, k, l = int(i), int(j), int(k), int(l)
+        generator += FermionOperator(((i, 1), (j, 0), (k, 1), (l, 0)), t_ijkl)
+        if anti_hermitian:
+            generator += FermionOperator(((l, 1), (k, 0), (j, 1), (i, 0)),
+                                         -t_ijkl)
+    return generator
+              </code></pre></div>
+              </td>
+
+          </tr>
+          </tbody>
+            </table>
+
+
+
+
+        </div>
+</div>
+
+{#    <textarea id="test" class="test"></textarea>#}
+<div>
+    <div id="righty_area_font"><b>Result:</b> Select an idiom in the drop-down list to update the results; After results are shown, you can click the button of each row to highlight the code</div>
+    <div id="righty">
+
+
+
+    <select class= "idiom",name= idioms, method=['GET','POST'], action="/">
+
+        {% for idiom in idioms %}
+        <option id="idiom_option"} >{{idiom}}</option>"
+        {% endfor %}
+{#        {% if idiom!="" %}#}
+{#            <option id="idiom_option",value= {{idiom}} SELECTED ></option>"#}
+{#        {% endif %}#}
+    </select>
+        <table >
+          <tbody id="pythonic_code", class="pythonic_code">
+
+          </tbody>
+    </table>
+{#     <p id="pythonic_code">{{pythonic_code}}</p>#}
+    </div>
+</div>
+
+
+
+    </div>
+    <script>
+
+        function ExampleClick(element)
+        {
+
+            var code = document.querySelector('.pre');
+            var code = document.querySelector('.code');
+            var parent = element.parentNode;
+            var content = parent.querySelector("div");
+        　　　　var td = event.target; //
+           this.id
+
+            let arr = td.textContent.split('\n');
+            var new_str="def f():\n"
+            for (var j=0;j<arr.length;j++)
+                            {
+                                new_str=new_str+"    "+arr[j]+"\n"
+                            }
+
+                 var test = document.getElementById("code");
+
+            new_str=td.textContent
+            new_str=element.toString()
+            new_str=content.textContent.trim()
+            {#new_str=code.textContent#}
+            myCodeMirror.setOption("value", new_str);
+                myCodeMirror.setSize(645, 450);
+                        {#myCodeMirror.setSize(600, 700);#}
+                        myCodeMirror.on("keypress", function() {
+                            // 显示智能提示
+                            test.textContent=new_str;
+                            console.log("i want to know the keypress is: ",myCodeMirror)
+                        });
+                        test.textContent=new_str;
+
+                        code.textContent=new_str;
+                        right_content()
+                         console.log("i want to know the click example is: ",test.textContent)
+                         console.log("i want to know the click the code example is: ",myCodeMirror.getValue())
+
+        }
+        function right_content(){
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":idiom_var}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+                  }).then(function(json) {
+
+                    var code_left = document.getElementById("code");
+
+                    console.log("i want to know the original code is: ",myCodeMirror.getValue())
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0) {
+                          var a=[]
+                          var i=0
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Pythonic Idiom"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              {#td.textContent="Non-idiomatic Code"#}
+                              td.textContent="Idiomatic Code"
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              td.textContent="Non-idiomatic Code"
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v4,v1, v2,v3] of json){
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr=document.createElement('tr')
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td=document.createElement('td')
+                                  td.textContent=v4
+                                  tr.appendChild(td);
+                                  {#JSON.stringify(v1).toString()#}
+
+                                  var td=document.createElement('td')
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td=document.createElement('td');
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+
+
+                               }
+                              console.log("set table content",tbody)
+                          }
+                          else{
+
+
+                              var tr = document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td = document.createElement('td');
+                              {#td.textContent = "Non-idiomatic Code"#}
+                              td.textContent = "Idiomatic Code";
+                              tr.appendChild(td);
+                              td = document.createElement('td');
+                              td.textContent = "Non-idiomatic Code"
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v1, v2,v3] of json) {
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr = document.createElement('tr')
+
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td = document.createElement('td')
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td = document.createElement('td');
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+                              }
+                          }
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+                                var tbody = document.getElementById('pythonic_code');
+                                   {#var elements=document.getElementsByTagName('tr');#}
+                                   for(var i_tr=1;i_tr<tbody.rows.length;i_tr++){
+                                       if (i_tr==parseInt(this.textContent))
+                                            tbody.rows[i_tr].style.background="#F7F7C7"
+                                       else
+                                        tbody.rows[i_tr].style.background="#E0FFFF"
+                                   }
+
+                                   pos=a[parseInt(this.textContent)-1]
+
+
+                                    myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                    {#myCodeMirror.scrollTo(null, 500 );#}
+                                                    {#a=myCodeMirror.getScrollInfo()#}
+                                                    {#myCodeMirror.setCursor(v1);#}
+                                                    {#console.log("I want to move the code into: ",a)#}
+                                                    {#myCodeMirror.setCursor(v1);#}
+                                                    {#myCodeMirror.setCursor({line: v1, ch: 0})#}
+
+                                                }
+                                                myCodeMirror.scrollIntoView({line:pos[0][0]+1,ch:0},50)
+                                   console.log("I want to move the code into: ",pos[0][0])
+
+                                                {#console.log(pos)#}
+                                               {#myCodeMirror.markText({line: 7, ch: 0},{line:10, ch: 9},{css: "background-color: 	#F7F7C7"});#}
+
+                               }
+
+
+
+                            }
+
+
+                          {#myCodeMirror.markText({line:1},{line:3},{readOnly:true});#}
+                      }
+                      else {
+                           console.log('parsing failed', json)
+                          tbody.innerHTML="There is no code could be explained"
+                      }
+                        console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    var tbody = document.getElementById('pythonic_code');
+                    tbody.innerHTML="Code has syntax error, please first check indention (4 spaces for 1 indent)."
+                    console.log('parsing failed', ex)
+                  })
+            }
+
+
+
+            const idiom = document.getElementById('idiom_option');
+
+            const selectElement = document.querySelector('.idiom');
+            var code = document.querySelector('.code');
+
+
+            var test = document.getElementById("code");
+            test.textContent=test.textContent.trim()
+
+console.log("current code is : ",test,test.textContent)
+            var myCodeMirror = CodeMirror.fromTextArea(test, {
+                lint: true,
+  extraKeys: {
+    "Ctrl-Space": "autocomplete"
+  },
+  autohint: true,
+  gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+              mode:  "python",
+                lineNumbers:true
+            });
+
+
+            {#myCodeMirror.code.textContent#}
+            {#myCodeMirror.update()#}
+            // 编辑器按键监听
+
+            {#myCodeMirror.getValue().markText({line:2,ch: 5});#}
+
+            {#myCodeMirror.markText({line: 2, ch: 0},{line: 4, ch: 90},{css: "background-color: 	#F7F7C7"});#}
+
+            myCodeMirror.setSize(645, 450);
+        console.log("current hight: ",myCodeMirror.getScrollInfo())
+            {#myCodeMirror.scrollIntoView({line: 22, ch: 0})#}
+    {#        var t = myCodeMirror.charCoords({line: 20, ch: 0}, "local").top;#}
+    {#        console.log("current hight: ",t)#}
+    {#var middleHeight = myCodeMirror.getScrollerElement().offsetHeight / 2;#}
+
+
+
+        {#myCodeMirror.scrollIntoView({top:304})#}
+    {#myCodeMirror.setCursor({line: 20, ch: 0})#}
+
+    console.log("current scroll info: ",myCodeMirror.getScrollInfo())
+            myCodeMirror.on("keypress", function() {
+                // 显示智能提示
+                test.textContent=myCodeMirror.getValue().trim();
+                {#myCodeMirror.scrollIntoView({line: 20, ch: 0})#}
+                {#myCodeMirror.refresh()#}
+
+            });
+             console.log("i want to know the outer code example is: ",myCodeMirror.getValue())
+
+
+            {#flask.updateCode(code.textContent);#}
+            let idiom_var=idiom.textContent.trim();
+            selectElement.addEventListener('change', (event) => {
+
+            {#idiom.textContent = event.target.value;#}
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":event.target.value}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+
+                  }).then(function(json) {
+                      idiom_var=event.target.value;
+                      {#idiom.textContent=event.target.value;#}
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0){
+                          var a=[]
+                          var i=0
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Num"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Pythonic Idiom"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Idiomatic Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          td.textContent="Non-idiomatic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+
+
+                          for (var [v4,v1, v2,v3] of json){
+                              a.push(v3)
+                              i=i+1
+                              var tr=document.createElement('tr')
+                              td=document.createElement('td');
+                              var button=document.createElement('button')
+                              button.setAttribute("id", i);
+                              button.textContent=i
+                              td.appendChild(button);
+                              tr.appendChild(td);
+                              var td=document.createElement('td')
+                              td.textContent=v4
+                              tr.appendChild(td);
+                              {#JSON.stringify(v1).toString()#}
+
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+
+
+                           }
+
+                          }
+                          else{
+                              var tr=document.createElement('tr');
+                          var td=document.createElement('td');
+                          td.textContent="Num"
+                          tr.appendChild(td);
+                          var td=document.createElement('td');
+                          td.textContent="Idiomatic Code"
+                          tr.appendChild(td);
+                          td=document.createElement('td');
+                          {#td.textContent="Idiomatic Code"#}
+                          td.textContent="Non-idiomatic Code"
+                          tr.appendChild(td);
+                          tbody.appendChild(tr);
+
+
+                          for (var [v1, v2,v3] of json){
+                              a.push(v3)
+                              i=i+1
+                              var tr=document.createElement('tr')
+                              td=document.createElement('td');
+                              var button=document.createElement('button')
+                              button.setAttribute("id", i);
+                              button.textContent=i
+                              td.appendChild(button);
+                              tr.appendChild(td);
+                              var td=document.createElement('td')
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v1
+                              {#JSON.stringify(v1).toString()#}
+                              td.appendChild(pre_html)
+                              {#td.textContent=JSON.stringify(v1,null, 4);#}
+                              {#td.target.value=v1;#}
+                              {#JSON.stringify(v1)#}
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              var pre_html=document.createElement('pre')
+                              pre_html.innerText=v2;
+                              td.appendChild(pre_html);
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+
+
+                           }
+                          }
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+
+                          {#myCodeMirror.markText({line:1,ch:1},{line:3,ch:1},{readOnly:true});#}
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+
+                                var tbody = document.getElementById('pythonic_code');
+                                   {#var elements=document.getElementsByTagName('tr');#}
+                                   for(var i_tr=1;i_tr<tbody.rows.length;i_tr++){
+                                       if (i_tr==parseInt(this.textContent))
+                                            tbody.rows[i_tr].style.background="#F7F7C7"
+                                       else
+                                            tbody.rows[i_tr].style.background="#E0FFFF"
+                                   }
+                                   pos=a[parseInt(this.textContent)-1]
+                                   myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                    {#a=myCodeMirror.getScrollInfo()#}
+                                                    {#myCodeMirror.setCursor(v1);#}
+                                                    {#console.log("I want to move the code into: ",a)#}
+                                                    {#myCodeMirror.setCursor(v1);#}
+                                                    {#myCodeMirror.setCursor({line: v1, ch: 0})#}
+                                                    {#myCodeMirror.scrollIntoView({line:100, char:5}, 200)#}
+                                                }
+                                   myCodeMirror.scrollIntoView({line:pos[0][0]+1,ch:0},50)
+                                   console.log("I want to move the code into: ",pos[0][0])
+
+
+                               }
+
+                            }
+                      }
+                      else {
+                          tbody.innerHTML="There is no code could be explained"
+                      }
+
+                        console.log('parsed json', json)
+                    console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    var tbody = document.getElementById('pythonic_code');
+                    tbody.innerHTML="Code has syntax error, please first check indention (4 spaces for 1 indent)."
+                    console.log('parsing failed', ex)
+                  })
+
+            });
+
+            var righty = document.getElementById('lefty');
+
+            {#code#}
+          //myCodeMirror.getValue()
+            righty.addEventListener("click", (event) => {
+
+                fetch('/idiom_refactor',{
+                    body: JSON.stringify({"code":myCodeMirror.getValue(),"idiom":idiom_var}),method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+                  }).then(function(json) {
+
+                    var code_left = document.getElementById("code");
+                      code.textContent=event.target.value;
+                      console.log("i want to know the code is: ",code_left.textContent)
+                      console.log("i want to know the code is: ",event.target.value)
+                    console.log("i want to know the original code is: ",myCodeMirror.getValue())
+                      var tbody = document.getElementById('pythonic_code');
+                      tbody.innerHTML=""
+                      if (json.length>0) {
+                          var a=[]
+                          var i=0
+                          {#var new_tbody = document.createElement('tbody');#}
+                          {#populate_with_new_rows(new_tbody);#}
+                          {#  tbody.parentNode.replaceChild(new_tbody, tbody)#}
+                          if (json[0].length>3){
+                              var tr=document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Pythonic Idiom"
+                              tr.appendChild(td);
+                              var td=document.createElement('td');
+                              td.textContent="Idiomatic Code"
+                              tr.appendChild(td);
+                              td=document.createElement('td');
+                              td.textContent="Non-idiomatic Code"
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v4,v1, v2,v3] of json){
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr=document.createElement('tr')
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td=document.createElement('td')
+                                  td.textContent=v4
+                                  tr.appendChild(td);
+                                  {#JSON.stringify(v1).toString()#}
+
+                                  var td=document.createElement('td')
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td=document.createElement('td');
+                                  var pre_html=document.createElement('pre')
+                                  pre_html.innerText=v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+
+
+                               }
+                              console.log("set table content",tbody)
+                          }
+                          else{
+
+
+                              var tr = document.createElement('tr');
+                              var td=document.createElement('td');
+                              td.textContent="Num"
+                              tr.appendChild(td);
+                              var td = document.createElement('td');
+                              td.textContent = "Idiomatic Code"
+                              tr.appendChild(td);
+                              td = document.createElement('td');
+                              td.textContent = "Non-idiomatic Code";
+                              tr.appendChild(td);
+                              tbody.appendChild(tr);
+
+                              for (var [v1, v2,v3] of json) {
+                                  a.push(v3)
+                                  i=i+1
+                                  var tr = document.createElement('tr')
+
+                                  td=document.createElement('td');
+                                  var button=document.createElement('button')
+                                  button.setAttribute("id", i);
+                                  button.textContent=i
+                                  td.appendChild(button);
+                                  tr.appendChild(td);
+                                  var td = document.createElement('td')
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v1
+                                  {#JSON.stringify(v1).toString()#}
+                                  td.appendChild(pre_html)
+                                  {#td.textContent=JSON.stringify(v1,null, 4);#}
+                                  {#td.target.value=v1;#}
+                                  {#JSON.stringify(v1)#}
+                                  tr.appendChild(td);
+                                  td = document.createElement('td');
+                                  var pre_html = document.createElement('pre')
+                                  pre_html.innerText = v2;
+                                  td.appendChild(pre_html);
+                                  tr.appendChild(td);
+                                  tbody.appendChild(tr);
+
+                              }
+                          }
+                          for (var j=1;j<=i;j++)
+                            {
+
+
+                               var but = document.getElementById(j);
+                               but.onclick=function (){
+                                var tbody = document.getElementById('pythonic_code');
+                                   {#var elements=document.getElementsByTagName('tr');#}
+                                   for(var i_tr=1;i_tr<tbody.rows.length;i_tr++){
+                                       if (i_tr==parseInt(this.textContent))
+                                            tbody.rows[i_tr].style.background="#F7F7C7"
+                                       else
+                                        tbody.rows[i_tr].style.background="#E0FFFF"
+                                   }
+
+                                   pos=a[parseInt(this.textContent)-1]
+                                    myCodeMirror.doc.getAllMarks().forEach(marker => marker.clear());
+                                                for (var [v1, v2] of pos) {
+                                                    console.log(v1);
+                                                    console.log(v2);
+                                                    myCodeMirror.markText({line: v1-1, ch: 0}, {
+                                                        line: v2-1,
+                                                        ch: 90
+                                                    }, {css: "background-color: 	#F7F7C7"});
+                                                    {#myCodeMirror.scrollIntoView({line:100, char:5}, 200)#}
+
+
+                                                    {#myCodeMirror.setCursor(v1);#}
+
+                                                    {#myCodeMirror.scrollTop()#}
+                                                }
+                                                 {#myCodeMirror.doc.setCursor({line:pos[0][0],ch:0})#}
+                                                myCodeMirror.scrollIntoView({line:pos[0][0]+1,ch:0},50)
+                                        console.log("I want to move the code into: ",pos[0][0])
+
+
+                                               {#myCodeMirror.markText({line: 7, ch: 0},{line:10, ch: 9},{css: "background-color: 	#F7F7C7"});#}
+
+                               }
+
+
+
+                            }
+
+
+                          {#myCodeMirror.markText({line:1},{line:3},{readOnly:true});#}
+                      }
+                      else {
+                           console.log('parsing failed', json)
+                          tbody.innerHTML="There is no code could be explained"
+                      }
+                        console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    var tbody = document.getElementById('pythonic_code');
+                    tbody.innerHTML="Code has syntax error, please first check indention (4 spaces for 1 indent)."
+                    console.log('parsing failed', ex)
+                  })
+
+
+            });
+
+
+
+
+
+    </script>
+
+
+
+</div>
+{##}
+
+</html>

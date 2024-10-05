@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static',filename='myindex.css') }}">
+
+
+  <header>
+      <h1 >Refactoring Java-style Python Code into Pythonic Code</h1>
+
+  </header>
+<div>
+    <div id="lefty">
+{##Please input Python code fragments#}
+               <textarea class= "code" name="code",method=['GET','POST'] >#Please input Python code fragments </textarea>
+
+    </div>
+    <div id="righty">
+
+    <select class= "idiom",name= idioms, method=['GET','POST'], action="/">
+        {% for idiom in idioms %}
+        <option id="idiom_option",value= {{idiom}} SELECTED >{{idiom}}</option>"
+        {% endfor %}
+    </select>
+     <p id="print_iput">{{session['pythonic_code']  }}</p>
+</div>
+    <script>
+        const idiom = document.getElementById('idiom_option');
+            const selectElement = document.querySelector('.idiom');
+
+            selectElement.addEventListener('change', (event) => {
+
+            idiom.textContent = event.target.value;
+
+            });
+            const code = document.querySelector('.code');
+            code.addEventListener('change', (event) => {
+                fetch('/idiom_refactor',{
+                    code: event.target.value,idiom:idiom.textContent,method: 'POST',
+                })
+                  .then(function(response) {
+
+                    return response.json()
+
+                  }).then(function(json) {
+
+                    console.log('parsed json', json)
+                  }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                  })
+
+
+            });
+
+
+
+    </script>
+
+
+
+
+</div>
+{#    <table >#}
+{#          <tbody >#}
+{#          <tr>#}
+{#            <td id="lefty" >#}
+{#               <textarea>#Please input Python code fragments </textarea>#}
+{#            </td>#}
+{#            <td id="righty">#}
+{#              #Please input Python code fragments#}
+{#            </td>#}
+{#          </tr>#}
+{#          </tbody>#}
+{#    </table>#}
+{#<table >#}
+{#    <tbody >#}
+{#          <tr>#}
+{##}
+{#            <td id="righty">#}
+{#              #Please input Python code fragments#}
+{#            </td>#}
+{#          </tr>#}
+{#          </tbody>#}
+{#    </table>#}
+{#</div>#}
+</html>
